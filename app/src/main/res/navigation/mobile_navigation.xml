@@ -35,9 +35,9 @@
         android:label="@string/menu_share"
         tools:layout="@layout/fragment_share" />
 
-    <fragment
+    <activity
         android:id="@+id/nav_send"
-        android:name="com.example.listen.ui.send.SendFragment"
+        android:name="com.example.listen.SettingsActivity"
         android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
+        tools:layout="@layout/settings_activity" />
 </navigation>
