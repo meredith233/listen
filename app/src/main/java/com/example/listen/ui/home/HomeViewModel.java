@@ -6,8 +6,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.listen.entity.Word;
-import com.example.listen.repository.WordRepository;
+import com.example.listen.entity.Material;
+import com.example.listen.repository.MaterialRepository;
 
 import java.util.List;
 
@@ -15,33 +15,27 @@ public class HomeViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
 
-    private WordRepository wordRepository;
+    private MutableLiveData<List<Material>> mMaterial;
 
-    private LiveData<List<Word>> allWords;
+    private MaterialRepository materialRepository;
 
     public HomeViewModel(Application application) {
         super(application);
-        wordRepository = new WordRepository(application);
-        allWords = wordRepository.getAllWords();
 
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
+
+        materialRepository = new MaterialRepository();
+//        mMaterial = new MutableLiveData<>();
+//        mMaterial.postValue(materialRepository.get());
     }
 
     public LiveData<String> getText() {
         return mText;
     }
 
-    public LiveData<List<Word>> getAllWords() {
-        return allWords;
-    }
-
-    public void insert(Word word) {
-        wordRepository.insert(word);
-    }
-
-    public void deleteAll() {
-        wordRepository.deleteAll();
+    public LiveData<List<Material>> getMaterial() {
+        return mMaterial;
     }
 
 }

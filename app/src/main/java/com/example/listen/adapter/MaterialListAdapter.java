@@ -9,38 +9,38 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listen.R;
-import com.example.listen.entity.Word;
+import com.example.listen.entity.Material;
 
 import java.util.List;
 
-public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
+public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapter.MaterialViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<Word> mWords; // Cached copy of words
+    private List<Material> materialList; // Cached copy of words
 
-    public WordListAdapter(Context context) {
+    public MaterialListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MaterialViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.list_material, parent, false);
-        return new WordViewHolder(itemView);
+        return new MaterialViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(WordViewHolder holder, int position) {
-        if (mWords != null) {
-            Word current = mWords.get(position);
-            holder.wordItemView.setText(current.getWord());
+    public void onBindViewHolder(MaterialViewHolder holder, int position) {
+        if (materialList != null) {
+            Material current = materialList.get(position);
+            holder.wordItemView.setText(current.getName());
         } else {
             // Covers the case of data not being ready yet.
             holder.wordItemView.setText("No Word");
         }
     }
 
-    public void setWords(List<Word> words) {
-        mWords = words;
+    public void setWords(List<Material> materialList) {
+        this.materialList = materialList;
         notifyDataSetChanged();
     }
 
@@ -48,15 +48,15 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
-        if (mWords != null)
-            return mWords.size();
+        if (materialList != null)
+            return materialList.size();
         else return 0;
     }
 
-    class WordViewHolder extends RecyclerView.ViewHolder {
+    class MaterialViewHolder extends RecyclerView.ViewHolder {
         private final TextView wordItemView;
 
-        private WordViewHolder(View itemView) {
+        private MaterialViewHolder(View itemView) {
             super(itemView);
             wordItemView = itemView.findViewById(R.id.material_title);
         }
