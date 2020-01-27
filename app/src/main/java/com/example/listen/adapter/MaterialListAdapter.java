@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listen.R;
@@ -24,10 +25,12 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
     }
 
     @Override
-    public MaterialViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public MaterialViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.list_material, parent, false);
         MaterialViewHolder viewHolder = new MaterialViewHolder(itemView);
-        viewHolder.wordItemView.setOnClickListener(v -> {
+
+        viewHolder.materialTitle.setOnClickListener(v -> {
             int position = viewHolder.getAdapterPosition();
             Material material = materialList.get(position);
             Toast.makeText(v.getContext(), material.getName(), Toast.LENGTH_SHORT).show();
@@ -36,17 +39,17 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
     }
 
     @Override
-    public void onBindViewHolder(MaterialViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MaterialViewHolder holder, int position) {
         if (materialList != null) {
             Material current = materialList.get(position);
-            holder.wordItemView.setText(current.getName());
+            holder.materialTitle.setText(current.getName());
         } else {
             // Covers the case of data not being ready yet.
-            holder.wordItemView.setText("No Word");
+            holder.materialTitle.setText("No Word");
         }
     }
 
-    public void setWords(List<Material> materialList) {
+    public void setMaterials(List<Material> materialList) {
         this.materialList = materialList;
         notifyDataSetChanged();
     }
@@ -61,11 +64,11 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
     }
 
     class MaterialViewHolder extends RecyclerView.ViewHolder {
-        private final TextView wordItemView;
+        private final TextView materialTitle;
 
         private MaterialViewHolder(View itemView) {
             super(itemView);
-            wordItemView = itemView.findViewById(R.id.material_title);
+            materialTitle = itemView.findViewById(R.id.material_title);
         }
     }
 }

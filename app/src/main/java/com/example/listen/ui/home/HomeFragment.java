@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(manager);
         final MaterialListAdapter adapter = new MaterialListAdapter(root.getContext());
         recyclerView.setAdapter(adapter);
-        homeViewModel.getMaterial().observe(this, adapter::setWords);
+        homeViewModel.getMaterial().observe(this, adapter::setMaterials);
 
         return root;
     }
