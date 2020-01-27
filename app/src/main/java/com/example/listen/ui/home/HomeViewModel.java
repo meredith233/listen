@@ -26,8 +26,8 @@ public class HomeViewModel extends AndroidViewModel {
         mText.setValue("This is home fragment");
 
         materialRepository = new MaterialRepository();
-//        mMaterial = new MutableLiveData<>();
-//        mMaterial.postValue(materialRepository.get());
+        mMaterial = new MutableLiveData<>();
+        materialRepository.get(mMaterial);
     }
 
     public LiveData<String> getText() {

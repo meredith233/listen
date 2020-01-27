@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +26,13 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
     @Override
     public MaterialViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.list_material, parent, false);
-        return new MaterialViewHolder(itemView);
+        MaterialViewHolder viewHolder = new MaterialViewHolder(itemView);
+        viewHolder.wordItemView.setOnClickListener(v -> {
+            int position = viewHolder.getAdapterPosition();
+            Material material = materialList.get(position);
+            Toast.makeText(v.getContext(), material.getName(), Toast.LENGTH_SHORT).show();
+        });
+        return viewHolder;
     }
 
     @Override

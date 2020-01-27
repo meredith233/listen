@@ -1,14 +1,16 @@
 package com.example.listen.repository;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.listen.common.MyResponse;
 import com.example.listen.constant.GlobalConst;
 import com.example.listen.entity.Material;
 import com.example.listen.network.MaterialInterface;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -29,15 +31,19 @@ public class MaterialRepository {
 
     }
 
-    public List<Material> get() {
+    public void get(MutableLiveData<List<Material>> materials) {
         Call<MyResponse<List<Material>>> call = request.getIndexMaterial();
-        try {
-            Response<MyResponse<List<Material>>> response = call.execute();
-            MyResponse<List<Material>> myResponse = response.body();
-            return myResponse.getObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        call.enqueue(new Callback<MyResponse<List<Material>>>() {
+            @Override
+            public void onResponse(Call<MyResponse<List<Material>>> call, Response<MyResponse<List<Material>>> response) {
+                MyResponse<List<Material>> myResponse = response.body();
+                materials.postValue(myResponse.getObject());
+            }
+
+            @Override
+            public void onFailure(Call<MyResponse<List<Material>>> call, Throwable t) {
+
+            }
+        });
     }
 }

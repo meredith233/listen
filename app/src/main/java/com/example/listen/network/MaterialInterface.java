@@ -10,6 +10,6 @@ import retrofit2.http.GET;
 
 public interface MaterialInterface {
 
-    @GET("/materials/type/1221001401081143297")
+    @GET("/materials")
     Call<MyResponse<List<Material>>> getIndexMaterial();
 }
