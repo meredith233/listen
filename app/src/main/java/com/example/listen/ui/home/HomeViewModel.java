@@ -13,26 +13,17 @@ import java.util.List;
 
 public class HomeViewModel extends AndroidViewModel {
 
-    private MutableLiveData<String> mText;
-
     private MutableLiveData<List<Material>> mMaterial;
 
     private MaterialRepository materialRepository;
 
     public HomeViewModel(Application application) {
         super(application);
-
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-
         materialRepository = new MaterialRepository();
         mMaterial = new MutableLiveData<>();
         materialRepository.get(mMaterial);
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
 
     public LiveData<List<Material>> getMaterial() {
         return mMaterial;

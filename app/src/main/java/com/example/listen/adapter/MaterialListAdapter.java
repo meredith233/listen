@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listen.R;
@@ -30,7 +31,7 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
         View itemView = mInflater.inflate(R.layout.list_material, parent, false);
         MaterialViewHolder viewHolder = new MaterialViewHolder(itemView);
 
-        viewHolder.materialTitle.setOnClickListener(v -> {
+        viewHolder.cardView.setOnClickListener(v -> {
             int position = viewHolder.getAdapterPosition();
             Material material = materialList.get(position);
             Toast.makeText(v.getContext(), material.getName(), Toast.LENGTH_SHORT).show();
@@ -65,10 +66,12 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
 
     class MaterialViewHolder extends RecyclerView.ViewHolder {
         private final TextView materialTitle;
+        private final CardView cardView;
 
         private MaterialViewHolder(View itemView) {
             super(itemView);
             materialTitle = itemView.findViewById(R.id.material_title);
+            cardView = itemView.findViewById(R.id.material_list_main_page);
         }
     }
 }
