@@ -38,4 +38,8 @@ public class HomeViewModel extends AndroidViewModel {
         return mMaterial;
     }
 
+    public void refreshMaterial() {
+        materialRepository.get(mMaterial);
+    }
+
 }

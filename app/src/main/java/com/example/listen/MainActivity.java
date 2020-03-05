@@ -2,6 +2,8 @@ package com.example.listen;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -22,6 +24,11 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        LinearLayout linearLayout = findViewById(R.id.bottom_sheet);
+        linearLayout.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), "bottom click", Toast.LENGTH_SHORT).show();
+        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);

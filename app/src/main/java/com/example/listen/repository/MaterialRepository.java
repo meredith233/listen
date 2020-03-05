@@ -1,5 +1,6 @@
 package com.example.listen.repository;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.listen.common.MyResponse;
@@ -35,7 +36,7 @@ public class MaterialRepository {
         Call<MyResponse<List<Material>>> call = request.getIndexMaterial();
         call.enqueue(new Callback<MyResponse<List<Material>>>() {
             @Override
-            public void onResponse(Call<MyResponse<List<Material>>> call, Response<MyResponse<List<Material>>> response) {
+            public void onResponse(@NonNull Call<MyResponse<List<Material>>> call, Response<MyResponse<List<Material>>> response) {
                 MyResponse<List<Material>> myResponse = response.body();
                 materials.postValue(myResponse.getObject());
             }
