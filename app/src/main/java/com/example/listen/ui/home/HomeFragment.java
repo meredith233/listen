@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.listen.R;
 import com.example.listen.adapter.MaterialListAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 public class HomeFragment extends Fragment {
 
@@ -28,18 +26,10 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         RefreshLayout refreshLayout = root.findViewById(R.id.refresh_main);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                homeViewModel.refreshMaterial();
-                refreshLayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                refreshLayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
-            }
+        refreshLayout.setEnableLoadMore(false);
+        refreshLayout.setOnRefreshListener(refreshLayout1 -> {
+            homeViewModel.refreshMaterial();
+            refreshLayout1.finishRefresh(2000/*,false*/);//传入false表示刷新失败
         });
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view_main);

@@ -25,21 +25,43 @@
         layout="@layout/content_main" />
 
     <LinearLayout
+        android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/top_two_circle"
-        android:id="@+id/bottom_sheet"
         android:clickable="true"
-        android:focusable="true"
         android:elevation="10dp"
+        android:focusable="true"
         android:orientation="horizontal"
         app:layout_anchor="@id/fragment_container"
         app:layout_anchorGravity="bottom">
 
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="2333333333" />
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/material_title_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/material_type_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/play_button_bottom"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/button_circle" />
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

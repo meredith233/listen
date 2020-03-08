@@ -1,11 +1,14 @@
 package com.example.listen.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.listen.common.MyResponse;
 import com.example.listen.constant.GlobalConst;
 import com.example.listen.entity.Material;
+import com.example.listen.entity.MaterialType;
 import com.example.listen.network.MaterialInterface;
 
 import java.util.List;
@@ -16,6 +19,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class MaterialRepository {
 
@@ -32,7 +37,7 @@ public class MaterialRepository {
 
     }
 
-    public void get(MutableLiveData<List<Material>> materials) {
+    public void getMaterialForMainPage(MutableLiveData<List<Material>> materials) {
         Call<MyResponse<List<Material>>> call = request.getIndexMaterial();
         call.enqueue(new Callback<MyResponse<List<Material>>>() {
             @Override
@@ -42,8 +47,24 @@ public class MaterialRepository {
             }
 
             @Override
-            public void onFailure(Call<MyResponse<List<Material>>> call, Throwable t) {
+            public void onFailure(@NonNull Call<MyResponse<List<Material>>> call, Throwable t) {
+                Log.i(TAG, "onFailure: getMaterial", t);
+            }
+        });
+    }
 
+    public void getMaterialTypeForMainPage(MutableLiveData<List<MaterialType>> materialTypes) {
+        Call<MyResponse<List<MaterialType>>> call = request.getIndexMaterialType();
+        call.enqueue(new Callback<MyResponse<List<MaterialType>>>() {
+            @Override
+            public void onResponse(Call<MyResponse<List<MaterialType>>> call, Response<MyResponse<List<MaterialType>>> response) {
+                MyResponse<List<MaterialType>> myResponse = response.body();
+                materialTypes.postValue(myResponse.getObject());
+            }
+
+            @Override
+            public void onFailure(Call<MyResponse<List<MaterialType>>> call, Throwable t) {
+                Log.i(TAG, "onFailure: getMaterialType", t);
             }
         });
     }

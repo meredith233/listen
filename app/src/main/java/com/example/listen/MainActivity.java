@@ -2,6 +2,7 @@ package com.example.listen;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -28,6 +29,11 @@ public class MainActivity extends BaseActivity {
         LinearLayout linearLayout = findViewById(R.id.bottom_sheet);
         linearLayout.setOnClickListener(v -> {
             Toast.makeText(v.getContext(), "bottom click", Toast.LENGTH_SHORT).show();
+        });
+
+        Button button = findViewById(R.id.play_button_bottom);
+        button.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), "play/pause", Toast.LENGTH_SHORT).show();
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
