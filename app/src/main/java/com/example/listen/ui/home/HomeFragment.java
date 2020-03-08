@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.listen.R;
 import com.example.listen.adapter.MaterialListAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
 public class HomeFragment extends Fragment {
 
@@ -26,6 +27,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         RefreshLayout refreshLayout = root.findViewById(R.id.refresh_main);
+        refreshLayout.setRefreshHeader(new ClassicsHeader(root.getContext()));
         refreshLayout.setEnableLoadMore(false);
         refreshLayout.setOnRefreshListener(refreshLayout1 -> {
             homeViewModel.refreshMaterial();

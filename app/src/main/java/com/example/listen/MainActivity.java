@@ -2,7 +2,7 @@ package com.example.listen;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -31,9 +31,13 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(v.getContext(), "bottom click", Toast.LENGTH_SHORT).show();
         });
 
-        Button button = findViewById(R.id.play_button_bottom);
+        MyApplication app = (MyApplication) getApplication();
+        ImageButton button = findViewById(R.id.play_button_bottom);
         button.setOnClickListener(v -> {
-            Toast.makeText(v.getContext(), "play/pause", Toast.LENGTH_SHORT).show();
+            app.setIsPlaying(!app.getIsPlaying());
+            int id = app.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
+            button.setImageDrawable(getDrawable(id));
+            Toast.makeText(v.getContext(), "play/pause: " + app.getIsPlaying(), Toast.LENGTH_SHORT).show();
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
