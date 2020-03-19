@@ -1,8 +1,10 @@
-package com.example.listen;
+package com.example.listen.activity;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.listen.R;
 
 public class MaterialTypeDetailActivity extends AppCompatActivity {
 

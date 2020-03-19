@@ -4,8 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        layout="@layout/list_material_main"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100sp">
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

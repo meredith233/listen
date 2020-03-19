@@ -1,10 +1,12 @@
-package com.example.listen;
+package com.example.listen.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.example.listen.R;
 
 public class SettingsActivity extends BaseActivity {
 

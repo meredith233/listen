@@ -13,6 +13,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.listen.activity.BaseActivity;
+import com.example.listen.application.MyApplication;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends BaseActivity {
