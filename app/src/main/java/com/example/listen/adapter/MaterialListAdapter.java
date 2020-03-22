@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapter.MaterialViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<Material> materialList; // Cached copy of words
+    private List<Material> materialList; // Cached copy
 
     public MaterialListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -35,6 +36,14 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
             int position = viewHolder.getAdapterPosition();
             Material material = materialList.get(position);
             Toast.makeText(v.getContext(), material.getName(), Toast.LENGTH_SHORT).show();
+        });
+
+        viewHolder.playButton.setOnClickListener(v -> {
+            viewHolder.isPlaying = !viewHolder.isPlaying;
+            // TODO 链接service
+            int id = viewHolder.isPlaying ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
+            viewHolder.playButton.setImageResource(id);
+            Toast.makeText(v.getContext(), "list item play/pause: " + viewHolder.isPlaying, Toast.LENGTH_SHORT).show();
         });
         return viewHolder;
     }
@@ -64,14 +73,18 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
         else return 0;
     }
 
-    class MaterialViewHolder extends RecyclerView.ViewHolder {
+    static class MaterialViewHolder extends RecyclerView.ViewHolder {
         private final TextView materialTitle;
         private final CardView cardView;
+        private final ImageButton playButton;
+        private Boolean isPlaying;
 
         private MaterialViewHolder(View itemView) {
             super(itemView);
             materialTitle = itemView.findViewById(R.id.material_title);
             cardView = itemView.findViewById(R.id.material_list_main_page);
+            playButton = itemView.findViewById(R.id.play_button_item);
+            isPlaying = false;
         }
     }
 }

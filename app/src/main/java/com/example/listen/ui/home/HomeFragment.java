@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listen.R;
 import com.example.listen.adapter.MaterialListAdapter;
+import com.example.listen.adapter.MaterialTypeListAdapter;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
@@ -39,6 +40,14 @@ public class HomeFragment extends Fragment {
         final MaterialListAdapter adapter = new MaterialListAdapter(root.getContext());
         recyclerView.setAdapter(adapter);
         homeViewModel.getMaterial().observe(getViewLifecycleOwner(), adapter::setMaterials);
+
+        RecyclerView materialTypeRecyclerView = root.findViewById(R.id.recycler_view_main_material_type);
+        LinearLayoutManager materialTypeManager = new LinearLayoutManager(root.getContext());
+        materialTypeManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        materialTypeRecyclerView.setLayoutManager(materialTypeManager);
+        final MaterialTypeListAdapter materialTypeListAdapter = new MaterialTypeListAdapter(root.getContext());
+        materialTypeRecyclerView.setAdapter(materialTypeListAdapter);
+        homeViewModel.getMaterialType().observe(getViewLifecycleOwner(), materialTypeListAdapter::setMaterials);
 
         return root;
     }

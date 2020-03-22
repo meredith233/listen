@@ -7,11 +7,11 @@
     android:layout_margin="5dp"
     android:clickable="true"
     android:focusable="true"
-    android:padding="5dp"
     app:cardElevation="8dp"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,6 +19,18 @@
             android:id="@+id/material_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/play_button_item"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/button_circle"
+            android:contentDescription="@string/play_button_pic"
+            android:scaleType="center"
+            android:src="@drawable/ic_play_arrow_black_24dp" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

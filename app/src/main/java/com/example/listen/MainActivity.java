@@ -1,7 +1,7 @@
 package com.example.listen;
 
 import android.os.Bundle;
-import android.view.Menu;
+import android.view.KeyEvent;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -15,11 +15,14 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.listen.activity.BaseActivity;
 import com.example.listen.application.MyApplication;
+import com.example.listen.common.ActivityController;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends BaseActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+
+    private static Long duration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,9 @@ public class MainActivity extends BaseActivity {
         ImageButton button = findViewById(R.id.play_button_bottom);
         button.setOnClickListener(v -> {
             app.setIsPlaying(!app.getIsPlaying());
+            // TODO 链接service
             int id = app.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
-            button.setImageDrawable(getDrawable(id));
+            button.setImageResource(id);
             Toast.makeText(v.getContext(), "play/pause: " + app.getIsPlaying(), Toast.LENGTH_SHORT).show();
         });
 
@@ -57,16 +61,23 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (duration == null || Math.abs(duration - System.currentTimeMillis()) > 1000) {
+                Toast.makeText(getApplicationContext(), "再点击一次退出", Toast.LENGTH_SHORT).show();
+                duration = System.currentTimeMillis();
+                return false;
+            } else {
+                ActivityController.finishAll();
+            }
+        }
+        return false;
     }
 }
