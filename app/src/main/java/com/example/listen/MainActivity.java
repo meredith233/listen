@@ -14,7 +14,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.listen.activity.BaseActivity;
-import com.example.listen.application.MyApplication;
 import com.example.listen.common.ActivityController;
 import com.example.listen.player.MusicPlayer;
 import com.google.android.material.navigation.NavigationView;
@@ -39,14 +38,12 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(v.getContext(), "bottom click", Toast.LENGTH_SHORT).show();
         });
 
-        MyApplication app = (MyApplication) getApplication();
         ImageButton button = findViewById(R.id.play_button_bottom);
         button.setOnClickListener(v -> {
-            app.setIsPlaying(!app.getIsPlaying());
-            // TODO 链接service
-            int id = app.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
+            player.play();
+            int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             button.setImageResource(id);
-            Toast.makeText(v.getContext(), "play/pause: " + app.getIsPlaying(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(), "play/pause: " + player.getIsPlaying(), Toast.LENGTH_SHORT).show();
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
