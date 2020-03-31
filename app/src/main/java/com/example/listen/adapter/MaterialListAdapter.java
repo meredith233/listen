@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listen.R;
 import com.example.listen.entity.Material;
+import com.example.listen.player.MusicPlayer;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
 
     private final LayoutInflater mInflater;
     private List<Material> materialList; // Cached copy
+    private MusicPlayer player = MusicPlayer.getInstance();
 
     public MaterialListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -39,8 +41,11 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
         });
 
         viewHolder.playButton.setOnClickListener(v -> {
-            viewHolder.isPlaying = !viewHolder.isPlaying;
-            // TODO 链接service
+            int position = viewHolder.getAdapterPosition();
+            Material material = materialList.get(position);
+            player.play(material);
+
+            viewHolder.isPlaying = player.getIsPlaying();
             int id = viewHolder.isPlaying ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             viewHolder.playButton.setImageResource(id);
             Toast.makeText(v.getContext(), "list item play/pause: " + viewHolder.isPlaying, Toast.LENGTH_SHORT).show();

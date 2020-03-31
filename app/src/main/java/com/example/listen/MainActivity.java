@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity {
 
         ImageButton button = findViewById(R.id.play_button_bottom);
         button.setOnClickListener(v -> {
-            player.play();
+            player.play(null);
             int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             button.setImageResource(id);
             Toast.makeText(v.getContext(), "play/pause: " + player.getIsPlaying(), Toast.LENGTH_SHORT).show();

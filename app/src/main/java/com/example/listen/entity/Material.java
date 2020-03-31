@@ -1,8 +1,16 @@
 package com.example.listen.entity;
 
+import java.util.Objects;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Material {
 
     private Long id;
@@ -23,4 +31,17 @@ public class Material {
     private String lyricsContent;
 
     private Integer sort;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Material material = (Material) o;
+        return id.equals(material.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
