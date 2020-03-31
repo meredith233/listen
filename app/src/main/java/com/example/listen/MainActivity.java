@@ -16,6 +16,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.listen.activity.BaseActivity;
 import com.example.listen.application.MyApplication;
 import com.example.listen.common.ActivityController;
+import com.example.listen.player.MusicPlayer;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends BaseActivity {
@@ -23,6 +24,8 @@ public class MainActivity extends BaseActivity {
     private AppBarConfiguration mAppBarConfiguration;
 
     private static Long duration;
+
+    private MusicPlayer player = MusicPlayer.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
