@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.PlayingActivity" />
+        <activity
+            android:name=".activity.PlayingActivity"
+            android:launchMode="singleInstance" />
         <activity android:name=".activity.MaterialTypeDetailActivity" />
         <activity
             android:name=".activity.SettingsActivity"

@@ -62,4 +62,8 @@ public class MusicPlayer {
     public Boolean getIsPlaying() {
         return mediaPlayer.isPlaying();
     }
+
+    public Material getPlayingMaterial() {
+        return playingMaterial;
+    }
 }

@@ -18,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.listen.activity.BaseActivity;
+import com.example.listen.activity.PlayingActivity;
 import com.example.listen.common.ActivityController;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.player.MusicPlayer;
@@ -50,7 +51,9 @@ public class MainActivity extends BaseActivity {
 
         LinearLayout linearLayout = findViewById(R.id.bottom_sheet);
         linearLayout.setOnClickListener(v -> {
-            Toast.makeText(v.getContext(), "bottom click", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.setClass(this, PlayingActivity.class);
+            startActivity(intent);
         });
 
         button = findViewById(R.id.play_button_bottom);

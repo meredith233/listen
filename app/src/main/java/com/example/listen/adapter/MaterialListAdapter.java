@@ -23,9 +23,11 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
     private final LayoutInflater mInflater;
     private List<Material> materialList; // Cached copy
     private MusicPlayer player = MusicPlayer.getInstance();
+    private Material playingMaterial;
 
     public MaterialListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
+        playingMaterial = player.getPlayingMaterial();
     }
 
     @Override
@@ -33,18 +35,21 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
     public MaterialViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.list_material, parent, false);
         MaterialViewHolder viewHolder = new MaterialViewHolder(itemView);
+        int position = viewHolder.getAdapterPosition();
+        Material material = materialList.get(position);
+
+        if (material.equals(playingMaterial)) {
+            viewHolder.isPlaying = true;
+            int id = R.drawable.ic_pause_black_24dp;
+            viewHolder.playButton.setImageResource(id);
+        }
 
         viewHolder.cardView.setOnClickListener(v -> {
-            int position = viewHolder.getAdapterPosition();
-            Material material = materialList.get(position);
             Toast.makeText(v.getContext(), material.getName(), Toast.LENGTH_SHORT).show();
         });
 
         viewHolder.playButton.setOnClickListener(v -> {
-            int position = viewHolder.getAdapterPosition();
-            Material material = materialList.get(position);
             player.play(material);
-
             viewHolder.isPlaying = player.getIsPlaying();
             int id = viewHolder.isPlaying ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             viewHolder.playButton.setImageResource(id);
