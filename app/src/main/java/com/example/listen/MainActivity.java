@@ -1,5 +1,9 @@
 package com.example.listen;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.ImageButton;
@@ -15,6 +19,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.listen.activity.BaseActivity;
 import com.example.listen.common.ActivityController;
+import com.example.listen.constant.ActionConstant;
 import com.example.listen.player.MusicPlayer;
 import com.google.android.material.navigation.NavigationView;
 
@@ -26,24 +31,33 @@ public class MainActivity extends BaseActivity {
 
     private MusicPlayer player = MusicPlayer.getInstance();
 
+    private PlayStatusChangeReceiver receiver;
+
+    private ImageButton button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        player.setContext(this);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ActionConstant.PLAY_STATUS_CHANGE);
+        receiver = new PlayStatusChangeReceiver();
+        registerReceiver(receiver, intentFilter);
 
         LinearLayout linearLayout = findViewById(R.id.bottom_sheet);
         linearLayout.setOnClickListener(v -> {
             Toast.makeText(v.getContext(), "bottom click", Toast.LENGTH_SHORT).show();
         });
 
-        ImageButton button = findViewById(R.id.play_button_bottom);
+        button = findViewById(R.id.play_button_bottom);
         button.setOnClickListener(v -> {
             player.play(null);
             int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             button.setImageResource(id);
-            Toast.makeText(v.getContext(), "play/pause: " + player.getIsPlaying(), Toast.LENGTH_SHORT).show();
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -79,5 +93,19 @@ public class MainActivity extends BaseActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
+    class PlayStatusChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
+            button.setImageResource(id);
+        }
     }
 }

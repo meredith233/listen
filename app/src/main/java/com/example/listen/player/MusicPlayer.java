@@ -1,9 +1,12 @@
 package com.example.listen.player;
 
+import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 
 import androidx.annotation.Nullable;
 
+import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -18,12 +21,18 @@ public class MusicPlayer {
 
     private static Material playingMaterial = null;
 
+    private Context context;
+
     private MusicPlayer() {
         mediaPlayer = new MediaPlayer();
     }
 
     public static MusicPlayer getInstance() {
         return player;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     public void play(@Nullable Material onPlay) {
@@ -46,8 +55,8 @@ public class MusicPlayer {
         }
 
 
-
-        // TODO broadcast 提醒底部按钮修改
+        Intent intent = new Intent(ActionConstant.PLAY_STATUS_CHANGE);
+        context.sendBroadcast(intent);
     }
 
     public Boolean getIsPlaying() {
