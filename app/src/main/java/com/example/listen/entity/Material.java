@@ -25,6 +25,8 @@ public class Material {
 
     private Long fileId;
 
+    private String fileUrl;
+
     /**
      * 文件大小，单位byte
      */

@@ -45,7 +45,8 @@ public class MusicPlayer {
         } else {
             try {
                 mediaPlayer.reset();
-                mediaPlayer.setDataSource("http://music.163.com/song/media/outer/url?id=562598065.mp3");
+//                mediaPlayer.setDataSource(onPlay.getFileUrl());
+                mediaPlayer.setDataSource("http://m10.music.126.net/20200401224617/5e4f4d0245ae236ec211634e8d14bbc6/ymusic/26cb/5385/4501/270298cf596d4291c9d1b324f76e6b4d.mp3");
                 mediaPlayer.prepare();
                 mediaPlayer.start();
                 playingMaterial = onPlay;
@@ -53,7 +54,6 @@ public class MusicPlayer {
                 e.printStackTrace();
             }
         }
-
 
         Intent intent = new Intent(ActionConstant.PLAY_STATUS_CHANGE);
         context.sendBroadcast(intent);

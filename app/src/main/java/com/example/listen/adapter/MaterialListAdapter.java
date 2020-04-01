@@ -23,11 +23,9 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
     private final LayoutInflater mInflater;
     private List<Material> materialList; // Cached copy
     private MusicPlayer player = MusicPlayer.getInstance();
-    private Material playingMaterial;
 
     public MaterialListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
-        playingMaterial = player.getPlayingMaterial();
     }
 
     @Override
@@ -57,6 +55,13 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
     public void onBindViewHolder(@NonNull MaterialViewHolder holder, int position) {
         if (materialList != null) {
             Material current = materialList.get(position);
+            if (current.equals(player.getPlayingMaterial())) {
+                holder.isPlaying = player.getIsPlaying();
+            } else {
+                holder.isPlaying = Boolean.FALSE;
+            }
+            int id = holder.isPlaying ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
+            holder.playButton.setImageResource(id);
             holder.materialTitle.setText(current.getName());
         } else {
             // Covers the case of data not being ready yet.
