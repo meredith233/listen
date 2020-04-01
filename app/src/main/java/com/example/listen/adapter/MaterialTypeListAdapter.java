@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -36,9 +35,8 @@ public class MaterialTypeListAdapter extends RecyclerView.Adapter<MaterialTypeLi
         viewHolder.cardView.setOnClickListener(v -> {
             int position = viewHolder.getAdapterPosition();
             MaterialType materialType = materialTypeList.get(position);
-            Toast.makeText(v.getContext(), materialType.getName(), Toast.LENGTH_SHORT).show();
-            // TODO start activity
             Intent intent = new Intent(mInflater.getContext(), MaterialTypeDetailActivity.class);
+            intent.putExtra("typeId", materialType.getId());
             mInflater.getContext().startActivity(intent);
         });
         return viewHolder;
