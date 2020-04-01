@@ -19,6 +19,8 @@ public class Material {
 
     private Long typeId;
 
+    private String typeName;
+
     private String coverId;
 
     private Long fileId;

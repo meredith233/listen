@@ -66,4 +66,5 @@ public class MusicPlayer {
     public Material getPlayingMaterial() {
         return playingMaterial;
     }
+
 }

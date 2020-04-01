@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -21,8 +22,11 @@ import com.example.listen.activity.BaseActivity;
 import com.example.listen.activity.PlayingActivity;
 import com.example.listen.common.ActivityController;
 import com.example.listen.constant.ActionConstant;
+import com.example.listen.entity.Material;
 import com.example.listen.player.MusicPlayer;
 import com.google.android.material.navigation.NavigationView;
+
+import org.apache.commons.lang3.ObjectUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -35,6 +39,8 @@ public class MainActivity extends BaseActivity {
     private PlayStatusChangeReceiver receiver;
 
     private ImageButton button;
+    private TextView bottomTitle;
+    private TextView bottomTypeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,9 @@ public class MainActivity extends BaseActivity {
             int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             button.setImageResource(id);
         });
+
+        bottomTitle = findViewById(R.id.material_title_bottom);
+        bottomTypeName = findViewById(R.id.material_type_bottom);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -109,6 +118,12 @@ public class MainActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             button.setImageResource(id);
+
+            Material onPlay = player.getPlayingMaterial();
+            if (ObjectUtils.isNotEmpty(onPlay)) {
+                bottomTitle.setText(onPlay.getName());
+                bottomTypeName.setText(onPlay.getTypeName());
+            }
         }
     }
 }
