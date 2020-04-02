@@ -36,7 +36,7 @@ public class PlayingActivity extends AppCompatActivity {
     private void initView() {
         playButton = findViewById(R.id.playing_play_button);
         playButton.setOnClickListener(v -> {
-            player.play(null);
+            player.buttonPlay();
             int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             playButton.setImageResource(id);
         });

@@ -83,7 +83,7 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
 
         button = findViewById(R.id.play_button_bottom);
         button.setOnClickListener(v -> {
-            player.play(null);
+            player.buttonPlay();
             int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             button.setImageResource(id);
         });

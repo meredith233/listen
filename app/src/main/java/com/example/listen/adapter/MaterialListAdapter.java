@@ -38,7 +38,7 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
         viewHolder.cardView.setOnClickListener(v -> {
             int position = viewHolder.getAdapterPosition();
             Material material = materialList.get(position);
-            player.intentPlay(material);
+            player.play(material, materialList);
             Intent intent = new Intent();
             intent.setClass(mInflater.getContext(), PlayingActivity.class);
             mInflater.getContext().startActivity(intent);
@@ -47,7 +47,7 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
         viewHolder.playButton.setOnClickListener(v -> {
             int position = viewHolder.getAdapterPosition();
             Material material = materialList.get(position);
-            player.play(material);
+            player.buttonPlay(material, materialList);
             viewHolder.isPlaying = player.getIsPlaying();
             int id = viewHolder.isPlaying ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             viewHolder.playButton.setImageResource(id);
