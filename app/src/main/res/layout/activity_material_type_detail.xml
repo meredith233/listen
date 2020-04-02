@@ -30,7 +30,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="233333333"
+                        android:id="@+id/material_type_detail_title"
                         android:textColor="@color/bg_lightgray" />
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>

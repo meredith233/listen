@@ -1,5 +1,6 @@
 package com.example.listen.player;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class MusicPlayer {
 
+    @SuppressLint("StaticFieldLeak")
     private static final MusicPlayer player = new MusicPlayer();
 
     private static MediaPlayer mediaPlayer;
@@ -105,8 +107,8 @@ public class MusicPlayer {
     public Material getPlayingMaterial() {
         try {
             return playList.get(position);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
+
         }
         return null;
     }

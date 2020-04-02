@@ -41,7 +41,7 @@ public class MaterialRepository {
         Call<MyResponse<List<Material>>> call = request.getIndexMaterial();
         call.enqueue(new Callback<MyResponse<List<Material>>>() {
             @Override
-            public void onResponse(@NonNull Call<MyResponse<List<Material>>> call, Response<MyResponse<List<Material>>> response) {
+            public void onResponse(@NonNull Call<MyResponse<List<Material>>> call, @NonNull Response<MyResponse<List<Material>>> response) {
                 MyResponse<List<Material>> myResponse = response.body();
                 materials.postValue(myResponse.getObject());
             }
@@ -73,7 +73,7 @@ public class MaterialRepository {
         Call<MyResponse<MaterialType>> call = request.getTypeById(typeId);
         call.enqueue(new Callback<MyResponse<MaterialType>>() {
             @Override
-            public void onResponse(@NonNull Call<MyResponse<MaterialType>> call, Response<MyResponse<MaterialType>> response) {
+            public void onResponse(@NonNull Call<MyResponse<MaterialType>> call, @NonNull Response<MyResponse<MaterialType>> response) {
                 MyResponse<MaterialType> myResponse = response.body();
                 materialType.postValue(myResponse.getObject());
             }

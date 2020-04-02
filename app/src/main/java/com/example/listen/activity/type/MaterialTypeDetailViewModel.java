@@ -30,21 +30,19 @@ public class MaterialTypeDetailViewModel extends AndroidViewModel {
         mMaterialType = new MutableLiveData<>();
     }
 
-    public void setTypeId(Long typeId) {
+    void setTypeId(Long typeId) {
         this.typeId = typeId;
-        materialRepository.listMaterialByTypeId(mMaterial, typeId);
-        materialRepository.getMaterialTypeById(mMaterialType, typeId);
     }
 
     public LiveData<List<Material>> getMaterial() {
         return mMaterial;
     }
 
-    public LiveData<MaterialType> getMaterialType() {
+    LiveData<MaterialType> getMaterialType() {
         return mMaterialType;
     }
 
-    public void refreshMaterialType() {
+    void refreshMaterialType() {
         materialRepository.listMaterialByTypeId(mMaterial, typeId);
         materialRepository.getMaterialTypeById(mMaterialType, typeId);
     }

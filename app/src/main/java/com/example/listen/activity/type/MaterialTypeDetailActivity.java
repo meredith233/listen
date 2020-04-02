@@ -19,7 +19,6 @@ import com.example.listen.R;
 import com.example.listen.adapter.MaterialListAdapter;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
-import com.example.listen.entity.MaterialType;
 import com.example.listen.player.MusicPlayer;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -31,7 +30,6 @@ import java.util.Objects;
 public class MaterialTypeDetailActivity extends AppCompatActivity {
 
     private MusicPlayer player = MusicPlayer.getInstance();
-    private MaterialType materialType;
 
     private PlayStatusChangeReceiver receiver;
     private MaterialTypeDetailViewModel viewModel;
@@ -40,6 +38,7 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
     private TextView bottomTitle;
     private TextView bottomTypeName;
     private MaterialListAdapter materialListAdapter;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +47,11 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Long typeId = intent.getLongExtra("typeId", 0);
+        System.out.println(typeId);
 
         viewModel = new ViewModelProvider(this).get(MaterialTypeDetailViewModel.class);
         viewModel.setTypeId(typeId);
+        viewModel.refreshMaterialType();
 
         Toolbar toolbar = findViewById(R.id.material_type_detail_toolbar);
         setSupportActionBar(toolbar);
@@ -60,9 +61,18 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
 
         initBroadCast();
         initView();
+        initData();
     }
 
     private void initView() {
+        RecyclerView recyclerView = findViewById(R.id.material_type_detail_list);
+        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(manager);
+        materialListAdapter = new MaterialListAdapter(getApplicationContext());
+        recyclerView.setAdapter(materialListAdapter);
+
+        title = findViewById(R.id.material_type_detail_title);
+
         RefreshLayout refreshLayout = findViewById(R.id.refresh_material_type_detail);
         refreshLayout.setRefreshHeader(new ClassicsHeader(getApplicationContext()));
         refreshLayout.setEnableLoadMore(false);
@@ -70,14 +80,11 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
             viewModel.refreshMaterialType();
             refreshLayout1.finishRefresh(2000/*,false*/);//传入false表示刷新失败
         });
+    }
 
-        RecyclerView recyclerView = findViewById(R.id.material_type_detail_list);
-        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(manager);
-        materialListAdapter = new MaterialListAdapter(getApplicationContext());
-        recyclerView.setAdapter(materialListAdapter);
+    private void initData() {
+        viewModel.getMaterialType().observe(this, materialType -> title.setText(materialType.getName()));
         viewModel.getMaterial().observe(this, materialListAdapter::setMaterials);
-        viewModel.getMaterialType().observe(this, materialType -> this.materialType = materialType);
     }
 
     private void initBroadCast() {
