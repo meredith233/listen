@@ -1,18 +1,19 @@
 package com.example.listen.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listen.R;
+import com.example.listen.activity.playing.PlayingActivity;
 import com.example.listen.entity.Material;
 import com.example.listen.player.MusicPlayer;
 
@@ -37,7 +38,10 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
         viewHolder.cardView.setOnClickListener(v -> {
             int position = viewHolder.getAdapterPosition();
             Material material = materialList.get(position);
-            Toast.makeText(v.getContext(), material.getName(), Toast.LENGTH_SHORT).show();
+            player.intentPlay(material);
+            Intent intent = new Intent();
+            intent.setClass(mInflater.getContext(), PlayingActivity.class);
+            mInflater.getContext().startActivity(intent);
         });
 
         viewHolder.playButton.setOnClickListener(v -> {
