@@ -6,9 +6,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.MaterialTypeDetailActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/type_detail_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="233333333" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/material_type_detail_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
     <include
         layout="@layout/common_bottom"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_gravity="bottom"
         app:layout_anchorGravity="bottom" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

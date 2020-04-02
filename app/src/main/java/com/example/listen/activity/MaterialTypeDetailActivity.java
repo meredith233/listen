@@ -14,6 +14,7 @@ import com.example.listen.R;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
 import com.example.listen.player.MusicPlayer;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -31,6 +32,8 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_material_type_detail);
+        CollapsingToolbarLayout toolbar = findViewById(R.id.type_detail_toolbar);
+
 
         Intent intent = getIntent();
         Long typeId = intent.getLongExtra("typeId", 0);
