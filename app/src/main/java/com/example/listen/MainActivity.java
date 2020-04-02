@@ -19,7 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.listen.activity.BaseActivity;
-import com.example.listen.activity.PlayingActivity;
+import com.example.listen.activity.playing.PlayingActivity;
 import com.example.listen.common.ActivityController;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
