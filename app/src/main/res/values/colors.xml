@@ -6,4 +6,5 @@
     <color name="white">#ffffff</color>
     <color name="bg_lightgray">#D3D3D3</color>
     <color name="bg_lightblue">#ADD8E6</color>
+    <color name="black">#000000</color>
 </resources>

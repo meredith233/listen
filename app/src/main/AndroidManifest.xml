@@ -17,7 +17,7 @@
         <activity
             android:name=".activity.PlayingActivity"
             android:launchMode="singleInstance" />
-        <activity android:name=".activity.MaterialTypeDetailActivity" />
+        <activity android:name=".activity.type.MaterialTypeDetailActivity" />
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/title_activity_settings" />

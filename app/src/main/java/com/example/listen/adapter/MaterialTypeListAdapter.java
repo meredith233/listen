@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listen.R;
-import com.example.listen.activity.MaterialTypeDetailActivity;
+import com.example.listen.activity.type.MaterialTypeDetailActivity;
 import com.example.listen.entity.MaterialType;
 
 import java.util.List;

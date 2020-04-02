@@ -1,0 +1,43 @@
+package com.example.listen.activity.type;
+
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.listen.entity.Material;
+import com.example.listen.entity.MaterialType;
+import com.example.listen.repository.MaterialRepository;
+
+import java.util.List;
+
+public class MaterialTypeDetailViewModel extends AndroidViewModel {
+
+    private MutableLiveData<List<Material>> mMaterial;
+
+    private MutableLiveData<MaterialType> mMaterialType;
+
+    private MaterialRepository materialRepository;
+
+    public MaterialTypeDetailViewModel(@NonNull Application application) {
+        super(application);
+        materialRepository = new MaterialRepository();
+        mMaterial = new MutableLiveData<>();
+        mMaterialType = new MutableLiveData<>();
+        materialRepository.getMaterialForMainPage(mMaterial);
+    }
+
+    public LiveData<List<Material>> getMaterial() {
+        return mMaterial;
+    }
+
+    public LiveData<MaterialType> getMaterialType() {
+        return mMaterialType;
+    }
+
+    public void refreshMaterial() {
+        materialRepository.getMaterialForMainPage(mMaterial);
+    }
+}
