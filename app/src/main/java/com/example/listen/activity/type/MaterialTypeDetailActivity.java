@@ -19,6 +19,7 @@ import com.example.listen.R;
 import com.example.listen.adapter.MaterialListAdapter;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
+import com.example.listen.entity.MaterialType;
 import com.example.listen.player.MusicPlayer;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -30,29 +31,32 @@ import java.util.Objects;
 public class MaterialTypeDetailActivity extends AppCompatActivity {
 
     private MusicPlayer player = MusicPlayer.getInstance();
+    private MaterialType materialType;
 
     private PlayStatusChangeReceiver receiver;
-    MaterialTypeDetailViewModel viewModel;
+    private MaterialTypeDetailViewModel viewModel;
 
     private ImageButton button;
     private TextView bottomTitle;
     private TextView bottomTypeName;
-    MaterialListAdapter materialListAdapter;
+    private MaterialListAdapter materialListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_material_type_detail);
+
+        Intent intent = getIntent();
+        Long typeId = intent.getLongExtra("typeId", 0);
+
         viewModel = new ViewModelProvider(this).get(MaterialTypeDetailViewModel.class);
+        viewModel.setTypeId(typeId);
 
         Toolbar toolbar = findViewById(R.id.material_type_detail_toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        Intent intent = getIntent();
-        Long typeId = intent.getLongExtra("typeId", 0);
 
         initBroadCast();
         initView();
@@ -63,7 +67,7 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
         refreshLayout.setRefreshHeader(new ClassicsHeader(getApplicationContext()));
         refreshLayout.setEnableLoadMore(false);
         refreshLayout.setOnRefreshListener(refreshLayout1 -> {
-            viewModel.refreshMaterial();
+            viewModel.refreshMaterialType();
             refreshLayout1.finishRefresh(2000/*,false*/);//传入false表示刷新失败
         });
 
@@ -73,6 +77,7 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
         materialListAdapter = new MaterialListAdapter(getApplicationContext());
         recyclerView.setAdapter(materialListAdapter);
         viewModel.getMaterial().observe(this, materialListAdapter::setMaterials);
+        viewModel.getMaterialType().observe(this, materialType -> this.materialType = materialType);
     }
 
     private void initBroadCast() {

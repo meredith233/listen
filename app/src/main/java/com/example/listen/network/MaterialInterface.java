@@ -8,6 +8,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface MaterialInterface {
 
@@ -21,4 +22,10 @@ public interface MaterialInterface {
 
     @GET("/material/type/list")
     Call<MyResponse<List<MaterialType>>> getIndexMaterialType();
+
+    @GET("/material/type/{id}")
+    Call<MyResponse<MaterialType>> getTypeById(@Path("id") Long id);
+
+    @GET("/materials/type/{id}")
+    Call<MyResponse<List<Material>>> listMaterialByTypeId(@Path("id") Long id);
 }

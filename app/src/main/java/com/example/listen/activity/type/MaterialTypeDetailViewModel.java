@@ -21,12 +21,19 @@ public class MaterialTypeDetailViewModel extends AndroidViewModel {
 
     private MaterialRepository materialRepository;
 
+    private Long typeId;
+
     public MaterialTypeDetailViewModel(@NonNull Application application) {
         super(application);
         materialRepository = new MaterialRepository();
         mMaterial = new MutableLiveData<>();
         mMaterialType = new MutableLiveData<>();
-        materialRepository.getMaterialForMainPage(mMaterial);
+    }
+
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
+        materialRepository.listMaterialByTypeId(mMaterial, typeId);
+        materialRepository.getMaterialTypeById(mMaterialType, typeId);
     }
 
     public LiveData<List<Material>> getMaterial() {
@@ -37,7 +44,8 @@ public class MaterialTypeDetailViewModel extends AndroidViewModel {
         return mMaterialType;
     }
 
-    public void refreshMaterial() {
-        materialRepository.getMaterialForMainPage(mMaterial);
+    public void refreshMaterialType() {
+        materialRepository.listMaterialByTypeId(mMaterial, typeId);
+        materialRepository.getMaterialTypeById(mMaterialType, typeId);
     }
 }

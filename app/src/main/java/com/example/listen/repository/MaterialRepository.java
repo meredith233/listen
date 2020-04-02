@@ -68,4 +68,36 @@ public class MaterialRepository {
             }
         });
     }
+
+    public void getMaterialTypeById(MutableLiveData<MaterialType> materialType, Long typeId) {
+        Call<MyResponse<MaterialType>> call = request.getTypeById(typeId);
+        call.enqueue(new Callback<MyResponse<MaterialType>>() {
+            @Override
+            public void onResponse(@NonNull Call<MyResponse<MaterialType>> call, Response<MyResponse<MaterialType>> response) {
+                MyResponse<MaterialType> myResponse = response.body();
+                materialType.postValue(myResponse.getObject());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MyResponse<MaterialType>> call, Throwable t) {
+                Log.i(TAG, "onFailure: getMaterial", t);
+            }
+        });
+    }
+
+    public void listMaterialByTypeId(MutableLiveData<List<Material>> materials, Long typeId) {
+        Call<MyResponse<List<Material>>> call = request.listMaterialByTypeId(typeId);
+        call.enqueue(new Callback<MyResponse<List<Material>>>() {
+            @Override
+            public void onResponse(@NonNull Call<MyResponse<List<Material>>> call, Response<MyResponse<List<Material>>> response) {
+                MyResponse<List<Material>> myResponse = response.body();
+                materials.postValue(myResponse.getObject());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MyResponse<List<Material>>> call, Throwable t) {
+                Log.i(TAG, "onFailure: getMaterial", t);
+            }
+        });
+    }
 }
