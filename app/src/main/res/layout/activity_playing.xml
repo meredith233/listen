@@ -26,7 +26,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:textColor="@color/black"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:layout_anchorGravity="bottom"
-        android:background="@drawable/top_two_circle"
+        android:background="@color/white"
         android:elevation="10dp"
         android:focusable="true"
         android:orientation="horizontal">
