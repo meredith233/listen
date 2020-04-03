@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.playing.PlayingActivity">
 
@@ -46,6 +47,18 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/playing_previous_button"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="35dp"
+            android:layout_toStartOf="@id/playing_play_button"
+            android:background="@drawable/button_circle"
+            android:contentDescription="@string/play_button_pic"
+            android:scaleType="center"
+            android:src="@drawable/ic_chevron_left_black_24dp" />
+
+        <ImageButton
             android:id="@+id/playing_play_button"
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -54,6 +67,18 @@
             android:contentDescription="@string/play_button_pic"
             android:scaleType="center"
             android:src="@drawable/ic_play_arrow_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/playing_next_button"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="35dp"
+            android:layout_toEndOf="@id/playing_play_button"
+            android:background="@drawable/button_circle"
+            android:contentDescription="@string/play_button_pic"
+            android:scaleType="center"
+            android:src="@drawable/ic_chevron_right_black_24dp" />
 
     </RelativeLayout>
 

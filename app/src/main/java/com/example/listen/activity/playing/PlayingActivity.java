@@ -28,6 +28,8 @@ public class PlayingActivity extends AppCompatActivity {
     private PlayStatusChangeReceiver receiver;
 
     private ImageButton playButton;
+    private ImageButton nextButton;
+    private ImageButton previousButton;
     private TextView title;
 
     @Override
@@ -46,6 +48,10 @@ public class PlayingActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        previousButton = findViewById(R.id.playing_previous_button);
+        previousButton.setOnClickListener(v -> player.previous());
+        nextButton = findViewById(R.id.playing_next_button);
+        nextButton.setOnClickListener(v -> player.next());
         playButton = findViewById(R.id.playing_play_button);
         playButton.setOnClickListener(v -> {
             player.buttonPlay();

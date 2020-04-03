@@ -6,11 +6,15 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.widget.Toast;
 
+import com.example.listen.common.PlayModeEnum;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class MusicPlayer {
 
@@ -25,10 +29,14 @@ public class MusicPlayer {
 
     private Integer position;
 
+    private PlayModeEnum playMode;
+
+    private Random random;
+
     private MusicPlayer() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnCompletionListener(mp -> {
-            next();
+            onCompletionToNext();
         });
         mediaPlayer.setOnPreparedListener(mp -> {
             mp.start();
@@ -41,6 +49,23 @@ public class MusicPlayer {
         });
 
         position = 0;
+        playMode = PlayModeEnum.LIST_LOOP;
+        random = new Random();
+    }
+
+    private void onCompletionToNext() {
+        switch (playMode) {
+            case LIST_LOOP:
+                next();
+                break;
+            case SINGLE_LOOP:
+                mediaPlayer.start();
+                break;
+            case RANDOM:
+                position = random.nextInt(playList.size());
+                playByPosition();
+                break;
+        }
     }
 
     public static MusicPlayer getInstance() {
@@ -53,10 +78,12 @@ public class MusicPlayer {
 
     // 该方法用于底部按钮
     public void buttonPlay() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-        } else {
-            mediaPlayer.start();
+        if (CollectionUtils.isNotEmpty(playList)) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            } else {
+                mediaPlayer.start();
+            }
         }
         sendPlayStatusChangeBroadcast();
     }
@@ -69,6 +96,7 @@ public class MusicPlayer {
             } else {
                 mediaPlayer.start();
             }
+            sendPlayStatusChangeBroadcast();
         } else {
             this.play(onPlay, playList);
         }
@@ -80,6 +108,7 @@ public class MusicPlayer {
             this.playOneNewMusic(onPlay);
         } else if (!getIsPlaying()) {
             mediaPlayer.start();
+            sendPlayStatusChangeBroadcast();
         }
         refreshPlayList(onPlay, playList);
     }
