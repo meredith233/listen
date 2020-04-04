@@ -61,9 +61,13 @@ public class MainActivity extends BaseActivity {
 
         LinearLayout linearLayout = findViewById(R.id.bottom_sheet);
         linearLayout.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setClass(this, PlayingActivity.class);
-            startActivity(intent);
+            if (bottomTitle.getText().equals(getResources().getString(R.string.bottom_title_placeholder))) {
+
+            } else {
+                Intent intent = new Intent();
+                intent.setClass(this, PlayingActivity.class);
+                startActivity(intent);
+            }
         });
 
         button = findViewById(R.id.play_button_bottom);
