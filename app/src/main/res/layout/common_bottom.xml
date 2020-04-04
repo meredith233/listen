@@ -20,7 +20,8 @@
         <TextView
             android:id="@+id/material_title_bottom"
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="20dp"
+            android:text="@string/bottom_title_placeholder" />
 
         <TextView
             android:id="@+id/material_type_bottom"
