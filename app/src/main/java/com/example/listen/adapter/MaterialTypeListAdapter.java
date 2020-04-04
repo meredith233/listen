@@ -48,11 +48,11 @@ public class MaterialTypeListAdapter extends RecyclerView.Adapter<MaterialTypeLi
     public void onBindViewHolder(@NonNull MaterialTypeViewHolder holder, int position) {
         if (materialTypeList != null) {
             MaterialType current = materialTypeList.get(position);
-            holder.textView.setText(current.getName());
+            holder.title.setText(current.getName());
             Glide.with(mInflater.getContext()).load(current.getCoverId()).into(holder.cover);
         } else {
             // Covers the case of data not being ready yet.
-            holder.textView.setText("No Word");
+            holder.title.setText("No Word");
         }
     }
 
@@ -72,13 +72,13 @@ public class MaterialTypeListAdapter extends RecyclerView.Adapter<MaterialTypeLi
 
     static class MaterialTypeViewHolder extends RecyclerView.ViewHolder {
         private final CardView cardView;
-        private final TextView textView;
+        private final TextView title;
         private final ImageView cover;
 
         private MaterialTypeViewHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.material_type_list);
-            textView = itemView.findViewById(R.id.material_type_list_title);
+            title = itemView.findViewById(R.id.material_type_list_title);
             cover = itemView.findViewById(R.id.material_type_list_cover);
         }
     }
