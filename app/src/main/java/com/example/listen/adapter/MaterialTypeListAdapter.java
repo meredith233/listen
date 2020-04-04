@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.listen.R;
 import com.example.listen.activity.type.MaterialTypeDetailActivity;
 import com.example.listen.entity.MaterialType;
@@ -47,6 +49,7 @@ public class MaterialTypeListAdapter extends RecyclerView.Adapter<MaterialTypeLi
         if (materialTypeList != null) {
             MaterialType current = materialTypeList.get(position);
             holder.textView.setText(current.getName());
+            Glide.with(mInflater.getContext()).load(current.getCoverId()).into(holder.cover);
         } else {
             // Covers the case of data not being ready yet.
             holder.textView.setText("No Word");
@@ -70,11 +73,13 @@ public class MaterialTypeListAdapter extends RecyclerView.Adapter<MaterialTypeLi
     static class MaterialTypeViewHolder extends RecyclerView.ViewHolder {
         private final CardView cardView;
         private final TextView textView;
+        private final ImageView cover;
 
         private MaterialTypeViewHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.material_type_list);
-            textView = itemView.findViewById(R.id.material_list_title);
+            textView = itemView.findViewById(R.id.material_type_list_title);
+            cover = itemView.findViewById(R.id.material_type_list_cover);
         }
     }
 }
