@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.listen.R;
 import com.example.listen.adapter.MaterialListAdapter;
 import com.example.listen.constant.ActionConstant;
@@ -39,6 +41,8 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
     private TextView bottomTypeName;
     private MaterialListAdapter materialListAdapter;
     private TextView title;
+    private TextView description;
+    private ImageView cover;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,8 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
         recyclerView.setAdapter(materialListAdapter);
 
         title = findViewById(R.id.material_type_detail_title);
+        description = findViewById(R.id.material_type_detail_describe);
+        cover = findViewById(R.id.material_type_cover);
 
         RefreshLayout refreshLayout = findViewById(R.id.refresh_material_type_detail);
         refreshLayout.setRefreshHeader(new ClassicsHeader(getApplicationContext()));
@@ -83,7 +89,11 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        viewModel.getMaterialType().observe(this, materialType -> title.setText(materialType.getName()));
+        viewModel.getMaterialType().observe(this, materialType -> {
+            title.setText(materialType.getName());
+            description.setText(materialType.getDescription());
+            Glide.with(this).load(materialType.getCoverId()).into(cover);
+        });
         viewModel.getMaterial().observe(this, materialListAdapter::setMaterials);
     }
 

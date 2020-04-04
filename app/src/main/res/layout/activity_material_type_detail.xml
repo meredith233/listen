@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -27,11 +28,44 @@
                     app:expandedTitleMarginStart="48dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                    <TextView
+                    <!-- 该部分用于填充顶部关于类别的描写-->
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/material_type_detail_title"
-                        android:textColor="@color/bg_lightgray" />
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/material_type_cover"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="25dp"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/material_type_detail_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_toEndOf="@+id/material_type_cover"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/material_type_detail_describe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/material_type_detail_title"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_toEndOf="@+id/material_type_cover" />
+                    </RelativeLayout>
+
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
