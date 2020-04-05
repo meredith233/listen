@@ -56,6 +56,7 @@ public class PlayingActivity extends AppCompatActivity {
         @Override
         public void run() {
             if (player.getIsPlaying()) {
+                seekBar.setMax(player.getDuration());
                 long time = player.getCurrentPosition();
                 lrcView.updateTime(time);
                 seekBar.setProgress((int) time);
@@ -85,13 +86,9 @@ public class PlayingActivity extends AppCompatActivity {
             int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             playButton.setImageResource(id);
 
-            if (player.getIsPlaying()) {
-                handler.post(runnable);
-            } else {
-                handler.removeCallbacks(runnable);
-            }
         });
 
+        handler.post(runnable);
         int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
         playButton.setImageResource(id);
 
@@ -100,7 +97,9 @@ public class PlayingActivity extends AppCompatActivity {
         if (ObjectUtils.isNotEmpty(onPlay)) {
             title.setText(onPlay.getName());
             lrcView.loadLrc(onPlay.getLyricsContent());
-            handler.post(runnable);
+            if (player.getIsPlaying()) {
+                seekBar.setMax(player.getDuration());
+            }
         }
 
         lrcView.setDraggable(true, time -> {

@@ -179,4 +179,8 @@ public class MusicPlayer {
     public long getCurrentPosition() {
         return mediaPlayer.getCurrentPosition();
     }
+
+    public int getDuration() {
+        return mediaPlayer.getDuration();
+    }
 }
