@@ -168,4 +168,15 @@ public class MusicPlayer {
         this.position = newPlayList.indexOf(onPlay);
     }
 
+    public void seekTo(int time) {
+        mediaPlayer.seekTo(time);
+    }
+
+    public void start() {
+        mediaPlayer.start();
+    }
+
+    public long getCurrentPosition() {
+        return mediaPlayer.getCurrentPosition();
+    }
 }

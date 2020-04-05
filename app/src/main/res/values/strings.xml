@@ -31,4 +31,6 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="play_button_pic" />
     <string name="bottom_title_placeholder">place holder</string>
+
+    <string name="lrc_label">暂无歌词</string>
 </resources>

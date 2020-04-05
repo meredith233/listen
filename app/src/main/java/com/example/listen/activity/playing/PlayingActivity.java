@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.listen.R;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
+import com.example.listen.lrc.LrcView;
 import com.example.listen.player.MusicPlayer;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -27,10 +30,12 @@ public class PlayingActivity extends AppCompatActivity {
 
     private PlayStatusChangeReceiver receiver;
 
+    private LrcView lrcView;
+    private SeekBar seekBar;
     private ImageButton playButton;
-    private ImageButton nextButton;
-    private ImageButton previousButton;
     private TextView title;
+
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +52,44 @@ public class PlayingActivity extends AppCompatActivity {
         initBroadcast();
     }
 
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (player.getIsPlaying()) {
+                long time = player.getCurrentPosition();
+                lrcView.updateTime(time);
+                seekBar.setProgress((int) time);
+            }
+
+            handler.postDelayed(this, 300);
+        }
+    };
+
+    private void initBroadcast() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ActionConstant.PLAY_STATUS_CHANGE);
+        receiver = new PlayStatusChangeReceiver();
+        registerReceiver(receiver, intentFilter);
+    }
+
     private void initView() {
-        previousButton = findViewById(R.id.playing_previous_button);
+        lrcView = findViewById(R.id.lrc_view);
+        seekBar = findViewById(R.id.progress_bar);
+        ImageButton previousButton = findViewById(R.id.playing_previous_button);
         previousButton.setOnClickListener(v -> player.previous());
-        nextButton = findViewById(R.id.playing_next_button);
+        ImageButton nextButton = findViewById(R.id.playing_next_button);
         nextButton.setOnClickListener(v -> player.next());
         playButton = findViewById(R.id.playing_play_button);
         playButton.setOnClickListener(v -> {
             player.buttonPlay();
             int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             playButton.setImageResource(id);
+
+            if (player.getIsPlaying()) {
+                handler.post(runnable);
+            } else {
+                handler.removeCallbacks(runnable);
+            }
         });
 
         int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
@@ -66,20 +99,41 @@ public class PlayingActivity extends AppCompatActivity {
         Material onPlay = player.getPlayingMaterial();
         if (ObjectUtils.isNotEmpty(onPlay)) {
             title.setText(onPlay.getName());
+            lrcView.loadLrc(onPlay.getLyricsContent());
+            handler.post(runnable);
         }
-    }
 
-    private void initBroadcast() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ActionConstant.PLAY_STATUS_CHANGE);
-        receiver = new PlayStatusChangeReceiver();
-        registerReceiver(receiver, intentFilter);
+        lrcView.setDraggable(true, time -> {
+            player.seekTo((int) time);
+            if (!player.getIsPlaying()) {
+                player.start();
+                handler.post(runnable);
+            }
+            return true;
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                player.seekTo(seekBar.getProgress());
+                lrcView.updateTime(seekBar.getProgress());
+            }
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
+        handler.removeCallbacks(runnable);
     }
 
     @Override
@@ -98,6 +152,7 @@ public class PlayingActivity extends AppCompatActivity {
 
             Material onPlay = player.getPlayingMaterial();
             if (ObjectUtils.isNotEmpty(onPlay)) {
+                lrcView.loadLrc(onPlay.getLyricsContent());
                 title.setText(onPlay.getName());
             }
         }

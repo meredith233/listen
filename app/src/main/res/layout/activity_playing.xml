@@ -38,9 +38,33 @@
         android:layout_gravity="bottom"
         app:layout_anchorGravity="bottom">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.example.listen.lrc.LrcView
+            android:id="@+id/lrc_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:lrcAnimationDuration="1000"
+            app:lrcCurrentTextColor="#3F51B5"
+            app:lrcDividerHeight="20dp"
+            app:lrcLabel="找不到歌词"
+            app:lrcNormalTextColor="#BDBDBD"
+            app:lrcNormalTextSize="15sp"
+            app:lrcPadding="16dp"
+            app:lrcTextGravity="center"
+            app:lrcTextSize="15sp"
+            app:lrcTimeTextColor="#BDBDBD"
+            app:lrcTimelineColor="#80BDBDBD"
+            app:lrcTimelineTextColor="#9FA8DA" />
+
+        <SeekBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:elevation="10dp"
+            android:paddingBottom="60dp" />
 
         <include
             layout="@layout/playing_bottom"
