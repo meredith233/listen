@@ -54,10 +54,20 @@ public class PlayingActivity extends AppCompatActivity {
                     lrcView.updateTime(time);
                     seekBar.setProgress((int) time);
                 } else {
-                    if (time >= endTime) {
-                        player.pause();
-                        playBackStatus = PlayBackStatusEnum.RECORDING;
-                        recorder.start();
+                    switch (playBackStatus) {
+                        case PLAYING:
+                            if (time >= endTime) {
+                                player.pause();
+                                playBackStatus = PlayBackStatusEnum.RECORDING;
+                                recorder.start();
+                            }
+                            break;
+                        case RECORDING:
+                            break;
+                        case PLAYBACK:
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
