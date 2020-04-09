@@ -22,4 +22,14 @@ public class VoiceRecorder {
     public static VoiceRecorder getInstance() {
         return recorder;
     }
+
+    public void start() {
+        try {
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

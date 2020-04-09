@@ -15,10 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.listen.R;
+import com.example.listen.common.PlayBackStatusEnum;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
 import com.example.listen.lrc.LrcView;
 import com.example.listen.player.MusicPlayer;
+import com.example.listen.player.VoiceRecorder;
 
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -27,6 +29,7 @@ import java.util.Objects;
 public class PlayingActivity extends AppCompatActivity {
 
     private MusicPlayer player = MusicPlayer.getInstance();
+    private VoiceRecorder recorder = VoiceRecorder.getInstance();
 
     private PlayStatusChangeReceiver receiver;
 
@@ -35,7 +38,33 @@ public class PlayingActivity extends AppCompatActivity {
     private ImageButton playButton;
     private TextView title;
 
+    private PlayBackStatusEnum playBackStatus;
+    private long startTime;
+    private long endTime;
+
     private Handler handler = new Handler();
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (player.getIsPlaying()) {
+                seekBar.setMax(player.getDuration());
+                long time = player.getCurrentPosition();
+
+                if (PlayBackStatusEnum.DISABLE.equals(playBackStatus)) {
+                    lrcView.updateTime(time);
+                    seekBar.setProgress((int) time);
+                } else {
+                    if (time >= endTime) {
+                        player.pause();
+                        playBackStatus = PlayBackStatusEnum.RECORDING;
+                        recorder.start();
+                    }
+                }
+            }
+
+            handler.postDelayed(this, 300);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,23 +77,11 @@ public class PlayingActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        playBackStatus = PlayBackStatusEnum.DISABLE;
+        startTime = endTime = -1;
         initView();
         initBroadcast();
     }
-
-    private Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (player.getIsPlaying()) {
-                seekBar.setMax(player.getDuration());
-                long time = player.getCurrentPosition();
-                lrcView.updateTime(time);
-                seekBar.setProgress((int) time);
-            }
-
-            handler.postDelayed(this, 300);
-        }
-    };
 
     private void initBroadcast() {
         IntentFilter intentFilter = new IntentFilter();

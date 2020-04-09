@@ -34,6 +34,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
+import android.widget.Toast;
 
 import com.example.listen.R;
 
@@ -143,6 +144,13 @@ public class LrcView extends View {
                 }
             }
             return super.onSingleTapConfirmed(e);
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            int centerLine = getCenterLine();
+            String text = mLrcEntryList.get(centerLine).getText();
+            Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -745,5 +753,19 @@ public class LrcView extends View {
          * @return 是否成功消费该事件，如果成功消费，则会更新UI
          */
         boolean onPlayClick(long time);
+    }
+
+    public long getStartTime() {
+        int line = getCenterLine();
+        LrcEntry entry = mLrcEntryList.get(line);
+        return entry.getTime();
+    }
+
+    public long getNextLineStartTime() {
+        int line = getCenterLine() + 1;
+        if (line >= mLrcEntryList.size()) {
+            return -1;
+        }
+        return mLrcEntryList.get(line).getTime();
     }
 }
