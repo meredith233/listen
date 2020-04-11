@@ -7,7 +7,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -37,6 +39,11 @@ public class PlayingActivity extends AppCompatActivity {
     private SeekBar seekBar;
     private ImageButton playButton;
     private TextView title;
+
+    private RelativeLayout controlPanel;
+    private ImageButton controlPlay;
+    private ImageButton controlRecord;
+    private ImageButton controlRecordPlay;
 
     private PlayBackStatusEnum playBackStatus;
     private long startTime;
@@ -153,6 +160,12 @@ public class PlayingActivity extends AppCompatActivity {
                 lrcView.updateTime(seekBar.getProgress());
             }
         });
+
+        controlPanel = findViewById(R.id.control_panel);
+        controlPanel.setVisibility(View.INVISIBLE);
+        controlPlay = findViewById(R.id.control_play);
+        controlRecord = findViewById(R.id.control_record);
+        controlRecordPlay = findViewById(R.id.control_record_play);
     }
 
     @Override

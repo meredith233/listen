@@ -33,6 +33,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
@@ -42,6 +43,8 @@
             android:id="@+id/lrc_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_anchor="@+id/relativeLayout"
+            app:layout_anchorGravity="center"
             app:lrcAnimationDuration="1000"
             app:lrcCurrentTextColor="#3F51B5"
             app:lrcDividerHeight="20dp"
@@ -55,6 +58,16 @@
             app:lrcTimelineColor="#80BDBDBD"
             app:lrcTimelineTextColor="#9FA8DA" />
 
+
+        <include
+            android:id="@+id/control_panel"
+            layout="@layout/record_control_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="60dp"
+            android:elevation="10dp" />
+
         <SeekBar
             android:id="@+id/progress_bar"
             android:layout_width="match_parent"
@@ -64,7 +77,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             android:elevation="10dp"
-            android:paddingBottom="60dp" />
+            android:layout_marginBottom="60dp" />
 
         <include
             layout="@layout/playing_bottom"
