@@ -39,6 +39,7 @@ public class PlayingActivity extends AppCompatActivity {
     private SeekBar seekBar;
     private ImageButton playButton;
     private TextView title;
+    private RelativeLayout playPanel;
 
     private RelativeLayout controlPanel;
     private ImageButton controlPlay;
@@ -110,6 +111,8 @@ public class PlayingActivity extends AppCompatActivity {
     private void initView() {
         lrcView = findViewById(R.id.lrc_view);
         seekBar = findViewById(R.id.progress_bar);
+        playPanel = findViewById(R.id.play_panel);
+        ImageButton singleLinePlayButton = findViewById(R.id.playing_single_line);
         ImageButton previousButton = findViewById(R.id.playing_previous_button);
         previousButton.setOnClickListener(v -> player.previous());
         ImageButton nextButton = findViewById(R.id.playing_next_button);
@@ -119,7 +122,6 @@ public class PlayingActivity extends AppCompatActivity {
             player.buttonPlay();
             int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             playButton.setImageResource(id);
-
         });
 
         handler.post(runnable);
@@ -166,6 +168,16 @@ public class PlayingActivity extends AppCompatActivity {
         controlPlay = findViewById(R.id.control_play);
         controlRecord = findViewById(R.id.control_record);
         controlRecordPlay = findViewById(R.id.control_record_play);
+        ImageButton controlExit = findViewById(R.id.control_record_exit);
+        controlExit.setOnClickListener(v -> {
+            playPanel.setVisibility(View.VISIBLE);
+            controlPanel.setVisibility(View.INVISIBLE);
+        });
+
+        singleLinePlayButton.setOnClickListener(v -> {
+            playPanel.setVisibility(View.INVISIBLE);
+            controlPanel.setVisibility(View.VISIBLE);
+        });
     }
 
     @Override

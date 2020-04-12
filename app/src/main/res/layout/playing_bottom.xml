@@ -8,6 +8,29 @@
     android:clickable="true"
     android:orientation="horizontal">
 
+    <SeekBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="60dp"
+        android:elevation="10dp" />
+
+    <ImageButton
+        android:id="@+id/playing_single_line"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="35dp"
+        android:layout_toStartOf="@id/playing_previous_button"
+        android:background="@drawable/button_circle"
+        android:contentDescription="@string/play_button_pic"
+        android:scaleType="center"
+        android:src="@drawable/ic_repeat_one_black_24dp" />
+
     <ImageButton
         android:id="@+id/playing_previous_button"
         android:layout_width="35dp"
