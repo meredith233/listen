@@ -9,11 +9,24 @@
     android:orientation="horizontal">
 
     <ImageButton
-        android:id="@+id/control_play"
+        android:id="@+id/control_to_play"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerInParent="true"
-        android:layout_marginEnd="35dp"
+        android:layout_marginEnd="25dp"
+        android:layout_toStartOf="@id/control_to_previous_line"
+        android:background="@drawable/button_circle"
+        android:contentDescription="@string/play_button_pic"
+        android:scaleType="center"
+        android:src="@drawable/ic_play_arrow_black_24dp" />
+
+
+    <ImageButton
+        android:id="@+id/control_to_previous_line"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="25dp"
         android:layout_toStartOf="@id/control_record"
         android:background="@drawable/button_circle"
         android:contentDescription="@string/play_button_pic"
@@ -28,14 +41,14 @@
         android:background="@drawable/button_circle"
         android:contentDescription="@string/play_button_pic"
         android:scaleType="center"
-        android:src="@drawable/ic_play_arrow_black_24dp" />
+        android:src="@drawable/ic_fiber_manual_record_black_24dp" />
 
     <ImageButton
-        android:id="@+id/control_record_play"
+        android:id="@+id/control_to_next_line"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerInParent="true"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="25dp"
         android:layout_toEndOf="@id/control_record"
         android:background="@drawable/button_circle"
         android:contentDescription="@string/play_button_pic"
@@ -43,12 +56,24 @@
         android:src="@drawable/ic_chevron_right_black_24dp" />
 
     <ImageButton
+        android:id="@+id/control_to_play_back"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@id/control_to_next_line"
+        android:background="@drawable/button_circle"
+        android:contentDescription="@string/play_button_pic"
+        android:scaleType="center"
+        android:src="@drawable/ic_play_arrow_black_24dp" />
+
+    <ImageButton
         android:id="@+id/control_record_exit"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerInParent="true"
-        android:layout_marginStart="35dp"
-        android:layout_toEndOf="@id/control_record_play"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@id/control_to_play_back"
         android:background="@drawable/button_circle"
         android:contentDescription="@string/play_button_pic"
         android:scaleType="center"

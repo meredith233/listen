@@ -768,4 +768,12 @@ public class LrcView extends View {
         }
         return mLrcEntryList.get(line).getTime();
     }
+
+    public long getPreviousStartTime() {
+        int line = getCenterLine() - 1;
+        if (line < 0) {
+            return getStartTime();
+        }
+        return mLrcEntryList.get(line).getTime();
+    }
 }

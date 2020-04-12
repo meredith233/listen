@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -13,11 +14,13 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.listen.R;
 import com.example.listen.common.PlayBackStatusEnum;
+import com.example.listen.common.PlayModeEnum;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
 import com.example.listen.lrc.LrcView;
@@ -26,6 +29,7 @@ import com.example.listen.player.VoiceRecorder;
 
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.time.LocalTime;
 import java.util.Objects;
 
 public class PlayingActivity extends AppCompatActivity {
@@ -42,9 +46,10 @@ public class PlayingActivity extends AppCompatActivity {
     private RelativeLayout playPanel;
 
     private RelativeLayout controlPanel;
-    private ImageButton controlPlay;
     private ImageButton controlRecord;
-    private ImageButton controlRecordPlay;
+    private ImageButton controlToPlay;
+    private ImageButton controlToPlayBack;
+    private LocalTime recordEndTime;
 
     private PlayBackStatusEnum playBackStatus;
     private long startTime;
@@ -52,6 +57,7 @@ public class PlayingActivity extends AppCompatActivity {
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void run() {
             if (player.getIsPlaying()) {
@@ -64,13 +70,23 @@ public class PlayingActivity extends AppCompatActivity {
                 } else {
                     switch (playBackStatus) {
                         case PLAYING:
+                            resetControlButton();
                             if (time >= endTime) {
                                 player.pause();
                                 playBackStatus = PlayBackStatusEnum.RECORDING;
                                 recorder.start();
+                                recordEndTime = LocalTime.now().plusSeconds(30);
+                                controlToPlay.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+                                controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_red_24dp);
                             }
                             break;
                         case RECORDING:
+                            if (LocalTime.now().isAfter(recordEndTime)) {
+
+                                playBackStatus = PlayBackStatusEnum.PLAYBACK;
+                                controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
+                                controlToPlayBack.setImageResource(R.drawable.ic_play_arrow_red_24dp);
+                            }
                             break;
                         case PLAYBACK:
                             break;
@@ -165,19 +181,62 @@ public class PlayingActivity extends AppCompatActivity {
 
         controlPanel = findViewById(R.id.control_panel);
         controlPanel.setVisibility(View.INVISIBLE);
-        controlPlay = findViewById(R.id.control_play);
+        controlToPlay = findViewById(R.id.control_to_play);
+        controlToPlay.setOnClickListener(v -> {
+            player.seekTo((int) startTime);
+            resetControlButton();
+        });
+        ImageButton controlToPreviousLine = findViewById(R.id.control_to_previous_line);
+        controlToPreviousLine.setOnClickListener(v -> {
+            startTime = lrcView.getPreviousStartTime();
+            lrcView.updateTime(startTime);
+            endTime = lrcView.getNextLineStartTime();
+            player.seekTo((int) startTime);
+        });
         controlRecord = findViewById(R.id.control_record);
-        controlRecordPlay = findViewById(R.id.control_record_play);
+        ImageButton controlToNextLine = findViewById(R.id.control_to_next_line);
+        controlToNextLine.setOnClickListener(v -> {
+            long time = lrcView.getNextLineStartTime();
+            if (time == -1) {
+                player.seekTo((int) startTime);
+            } else {
+                startTime = time;
+                lrcView.updateTime(startTime);
+                endTime = lrcView.getNextLineStartTime();
+                player.seekTo((int) startTime);
+                resetControlButton();
+            }
+        });
+        controlToPlayBack = findViewById(R.id.control_to_play_back);
+        controlToPlayBack.setOnClickListener(v -> {
+
+        });
         ImageButton controlExit = findViewById(R.id.control_record_exit);
         controlExit.setOnClickListener(v -> {
             playPanel.setVisibility(View.VISIBLE);
             controlPanel.setVisibility(View.INVISIBLE);
+            playBackStatus = PlayBackStatusEnum.DISABLE;
+            startTime = endTime = -1;
+            player.setPlayMode(PlayModeEnum.LIST_LOOP);
+            player.start();
         });
 
         singleLinePlayButton.setOnClickListener(v -> {
+            player.setPlayMode(PlayModeEnum.SINGLE_LINE);
             playPanel.setVisibility(View.INVISIBLE);
             controlPanel.setVisibility(View.VISIBLE);
+            playBackStatus = PlayBackStatusEnum.PLAYING;
+            startTime = lrcView.getStartTime();
+            endTime = lrcView.getNextLineStartTime();
+            player.seekTo((int) startTime);
+            resetControlButton();
         });
+    }
+
+    private void resetControlButton() {
+        controlToPlay.setImageResource(R.drawable.ic_play_arrow_red_24dp);
+        controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
+        controlToPlayBack.setImageResource(R.drawable.ic_play_arrow_black_24dp);
     }
 
     @Override

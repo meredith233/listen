@@ -33,10 +33,6 @@ public class MusicPlayer {
 
     private Random random;
 
-    int startTime;
-
-    int endTime;
-
     private MusicPlayer() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnCompletionListener(mp -> {
@@ -53,7 +49,6 @@ public class MusicPlayer {
         });
 
         position = 0;
-        startTime = endTime = -1;
         playMode = PlayModeEnum.LIST_LOOP;
         random = new Random();
     }
@@ -71,7 +66,7 @@ public class MusicPlayer {
                 playByPosition();
                 break;
             case SINGLE_LINE:
-
+                mediaPlayer.pause();
                 break;
             default:
                 break;

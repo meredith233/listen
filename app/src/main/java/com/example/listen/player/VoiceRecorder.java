@@ -26,7 +26,7 @@ public class VoiceRecorder {
 //        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
         mediaPlayer = new MediaPlayer();
-//        mediaPlayer.setOnPreparedListener(MediaPlayer::start);
+        mediaPlayer.setOnPreparedListener(MediaPlayer::start);
     }
 
     public void setContext(Context context) {
