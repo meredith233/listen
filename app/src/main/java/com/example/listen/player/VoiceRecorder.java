@@ -18,6 +18,12 @@ public class VoiceRecorder {
     private Context context;
 
     private VoiceRecorder() {
+        String fileName = "cache.m4a";
+        File destDir = new File(Environment.getExternalStorageDirectory() + "/test/");
+        if (!destDir.exists()) {
+            destDir.mkdirs();
+        }
+        filePath = Environment.getExternalStorageDirectory() + "/cache/" + fileName;
         mediaRecorder = new MediaRecorder();
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(MediaPlayer::start);
@@ -33,12 +39,6 @@ public class VoiceRecorder {
 
     public void start() {
         try {
-            String fileName = "cache.m4a";
-            File destDir = new File(Environment.getExternalStorageDirectory() + "/test/");
-            if (!destDir.exists()) {
-                destDir.mkdirs();
-            }
-            filePath = Environment.getExternalStorageDirectory() + "/cache/" + fileName;
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
@@ -53,6 +53,8 @@ public class VoiceRecorder {
 
     public void playBack() {
         try {
+            mediaRecorder.stop();
+            mediaRecorder.reset();
             mediaPlayer.setDataSource(filePath);
             mediaPlayer.prepareAsync();
         } catch (Exception e) {
@@ -63,7 +65,7 @@ public class VoiceRecorder {
     public boolean isEnd() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
-            mediaPlayer.release();
+            mediaPlayer.reset();
             return true;
         }
         return false;

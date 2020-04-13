@@ -34,12 +34,16 @@ import org.apache.commons.lang3.ObjectUtils;
 import java.time.LocalTime;
 import java.util.Objects;
 
+import lombok.SneakyThrows;
+
 public class PlayingActivity extends AppCompatActivity {
 
     private MusicPlayer player = MusicPlayer.getInstance();
     private VoiceRecorder recorder = VoiceRecorder.getInstance();
 
     private PlayStatusChangeReceiver receiver;
+
+    private Material onPlayMaterial = null;
 
     private LrcView lrcView;
     private SeekBar seekBar;
@@ -56,31 +60,35 @@ public class PlayingActivity extends AppCompatActivity {
     private PlayBackStatusEnum playBackStatus;
     private long startTime;
     private long endTime;
+    private int line;
+    private int maxLine;
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
+        @SneakyThrows
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void run() {
             if (player.getIsPlaying()) {
                 seekBar.setMax(player.getDuration());
                 long time = player.getCurrentPosition();
-                if (PlayBackStatusEnum.DISABLE.equals(playBackStatus)) {
+                if (playBackStatus.equals(PlayBackStatusEnum.DISABLE)) {
                     lrcView.updateTime(time);
                     seekBar.setProgress((int) time);
-                } else {
-                    if (playBackStatus == PlayBackStatusEnum.PLAYING) {
-                        resetControlButton();
-                        if (time >= endTime) {
-                            player.pause();
-                            playBackStatus = PlayBackStatusEnum.RECORDING;
-                            recorder.start();
-                            recordEndTime = LocalTime.now().plusSeconds(30);
-                            controlToPlay.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-                            controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_red_24dp);
-                            Toast.makeText(getApplicationContext(), "录音中...", Toast.LENGTH_LONG).show();
-                        }
+                }
+                if (playBackStatus == PlayBackStatusEnum.PLAYING) {
+                    resetControlButton();
+                    Log.i("time-check", "run: " + time + " now " + endTime);
+                    if (time >= endTime) {
+                        player.pause();
+                        playBackStatus = PlayBackStatusEnum.RECORDING;
+                        recorder.start();
+                        recordEndTime = LocalTime.now().plusSeconds(30);
+                        controlToPlay.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+                        controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_red_24dp);
+                        Toast.makeText(getApplicationContext(), "录音中...", Toast.LENGTH_LONG).show();
                     }
+
                 }
             } else {
                 switch (playBackStatus) {
@@ -88,6 +96,7 @@ public class PlayingActivity extends AppCompatActivity {
                         Log.i("time-check", "run: " + recordEndTime);
                         if (LocalTime.now().isAfter(recordEndTime)) {
                             recorder.stopRecord();
+                            recorder.playBack();
                             playBackStatus = PlayBackStatusEnum.PLAYBACK;
                             controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
                             controlToPlayBack.setImageResource(R.drawable.ic_play_arrow_red_24dp);
@@ -95,7 +104,7 @@ public class PlayingActivity extends AppCompatActivity {
                         }
                         break;
                     case PLAYBACK:
-                        recorder.playBack();
+                        Thread.sleep(100);
                         if (recorder.isEnd()) {
                             player.seekTo((int) startTime);
                             player.start();
@@ -108,7 +117,7 @@ public class PlayingActivity extends AppCompatActivity {
                 }
             }
 
-            handler.postDelayed(this, 300);
+            handler.postDelayed(this, 800);
         }
     };
 
@@ -161,6 +170,7 @@ public class PlayingActivity extends AppCompatActivity {
         if (ObjectUtils.isNotEmpty(onPlay)) {
             title.setText(onPlay.getName());
             lrcView.loadLrc(onPlay.getLyricsContent());
+            onPlayMaterial = onPlay;
             if (player.getIsPlaying()) {
                 seekBar.setMax(player.getDuration());
             }
@@ -200,24 +210,28 @@ public class PlayingActivity extends AppCompatActivity {
         });
         ImageButton controlToPreviousLine = findViewById(R.id.control_to_previous_line);
         controlToPreviousLine.setOnClickListener(v -> {
-            startTime = lrcView.getPreviousStartTime();
-            lrcView.updateTime(startTime);
-            endTime = lrcView.getNextLineStartTime();
+            if (line - 1 >= 0) {
+                line--;
+            }
+            startTime = lrcView.getLineStartTime(line);
+            endTime = lrcView.getLineStartTime(line + 1);
             player.seekTo((int) startTime);
+            lrcView.updateTime(startTime);
+            resetControlButton();
+            playBackStatus = PlayBackStatusEnum.PLAYING;
         });
         controlRecord = findViewById(R.id.control_record);
         ImageButton controlToNextLine = findViewById(R.id.control_to_next_line);
         controlToNextLine.setOnClickListener(v -> {
-            long time = lrcView.getNextLineStartTime();
-            if (time == -1) {
-                player.seekTo((int) startTime);
-            } else {
-                startTime = time;
-                lrcView.updateTime(startTime);
-                endTime = lrcView.getNextLineStartTime();
-                player.seekTo((int) startTime);
-                resetControlButton();
+            if (line + 1 < maxLine) {
+                line++;
             }
+            startTime = lrcView.getLineStartTime(line);
+            endTime = lrcView.getLineStartTime(line + 1);
+            player.seekTo((int) startTime);
+            lrcView.updateTime(startTime);
+            resetControlButton();
+            playBackStatus = PlayBackStatusEnum.PLAYING;
         });
         controlToPlayBack = findViewById(R.id.control_to_play_back);
         controlToPlayBack.setOnClickListener(v -> {
@@ -238,8 +252,11 @@ public class PlayingActivity extends AppCompatActivity {
             playPanel.setVisibility(View.INVISIBLE);
             controlPanel.setVisibility(View.VISIBLE);
             playBackStatus = PlayBackStatusEnum.PLAYING;
-            startTime = lrcView.getStartTime();
-            endTime = lrcView.getNextLineStartTime();
+            line = lrcView.getCenterLineNum();
+            maxLine = lrcView.getMaxLineNum();
+            startTime = lrcView.getLineStartTime(line);
+            endTime = lrcView.getLineStartTime(line + 1);
+            lrcView.updateTime(startTime);
             player.seekTo((int) startTime);
             resetControlButton();
         });
@@ -273,7 +290,7 @@ public class PlayingActivity extends AppCompatActivity {
             playButton.setImageResource(id);
 
             Material onPlay = player.getPlayingMaterial();
-            if (ObjectUtils.isNotEmpty(onPlay)) {
+            if (ObjectUtils.isNotEmpty(onPlay) && !onPlay.equals(onPlayMaterial)) {
                 lrcView.loadLrc(onPlay.getLyricsContent());
                 title.setText(onPlay.getName());
             }

@@ -755,25 +755,17 @@ public class LrcView extends View {
         boolean onPlayClick(long time);
     }
 
-    public long getStartTime() {
-        int line = getCenterLine();
-        LrcEntry entry = mLrcEntryList.get(line);
-        return entry.getTime();
-    }
 
-    public long getNextLineStartTime() {
-        int line = getCenterLine() + 1;
-        if (line >= mLrcEntryList.size()) {
-            return -1;
-        }
+    public long getLineStartTime(int line) {
         return mLrcEntryList.get(line).getTime();
     }
 
-    public long getPreviousStartTime() {
-        int line = getCenterLine() - 1;
-        if (line < 0) {
-            return getStartTime();
-        }
-        return mLrcEntryList.get(line).getTime();
+    public int getCenterLineNum() {
+        return getCenterLine();
     }
+
+    public int getMaxLineNum() {
+        return mLrcEntryList.size();
+    }
+
 }

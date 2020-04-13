@@ -24,7 +24,6 @@ import com.example.listen.common.ActivityController;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
 import com.example.listen.player.MusicPlayer;
-import com.example.listen.player.VoiceRecorder;
 import com.example.listen.utils.PermissionUtils;
 import com.google.android.material.navigation.NavigationView;
 
@@ -37,7 +36,6 @@ public class MainActivity extends BaseActivity {
     private static Long duration;
 
     private MusicPlayer player = MusicPlayer.getInstance();
-    private VoiceRecorder recorder = VoiceRecorder.getInstance();
 
     private PlayStatusChangeReceiver receiver;
 
@@ -52,7 +50,6 @@ public class MainActivity extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         player.setContext(this);
-        recorder.setContext(this);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ActionConstant.PLAY_STATUS_CHANGE);
