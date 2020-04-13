@@ -1,6 +1,5 @@
 package com.example.listen.player;
 
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
@@ -15,8 +14,6 @@ public class VoiceRecorder {
     private MediaPlayer mediaPlayer;
     private String filePath;
 
-    private Context context;
-
     private VoiceRecorder() {
         String fileName = "cache.m4a";
         File destDir = new File(Environment.getExternalStorageDirectory() + "/test/");
@@ -27,10 +24,6 @@ public class VoiceRecorder {
         mediaRecorder = new MediaRecorder();
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(MediaPlayer::start);
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 
     public static VoiceRecorder getInstance() {
@@ -53,10 +46,9 @@ public class VoiceRecorder {
 
     public void playBack() {
         try {
-            mediaRecorder.stop();
-            mediaRecorder.reset();
             mediaPlayer.setDataSource(filePath);
-            mediaPlayer.prepareAsync();
+            mediaPlayer.prepare();
+            mediaPlayer.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,6 +65,11 @@ public class VoiceRecorder {
 
     public void stopRecord() {
         mediaRecorder.stop();
+        mediaRecorder.reset();
+    }
+
+    public void exit() {
+        mediaPlayer.release();
         mediaRecorder.release();
     }
 }

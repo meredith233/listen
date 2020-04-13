@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -78,7 +77,6 @@ public class PlayingActivity extends AppCompatActivity {
                 }
                 if (playBackStatus == PlayBackStatusEnum.PLAYING) {
                     resetControlButton();
-                    Log.i("time-check", "run: " + time + " now " + endTime);
                     if (time >= endTime) {
                         player.pause();
                         playBackStatus = PlayBackStatusEnum.RECORDING;
@@ -93,7 +91,6 @@ public class PlayingActivity extends AppCompatActivity {
             } else {
                 switch (playBackStatus) {
                     case RECORDING:
-                        Log.i("time-check", "run: " + recordEndTime);
                         if (LocalTime.now().isAfter(recordEndTime)) {
                             recorder.stopRecord();
                             recorder.playBack();
@@ -104,7 +101,6 @@ public class PlayingActivity extends AppCompatActivity {
                         }
                         break;
                     case PLAYBACK:
-                        Thread.sleep(100);
                         if (recorder.isEnd()) {
                             player.seekTo((int) startTime);
                             player.start();
@@ -221,6 +217,16 @@ public class PlayingActivity extends AppCompatActivity {
             playBackStatus = PlayBackStatusEnum.PLAYING;
         });
         controlRecord = findViewById(R.id.control_record);
+        controlRecord.setOnClickListener(v -> {
+            if (PlayBackStatusEnum.RECORDING.equals(playBackStatus)) {
+                recorder.stopRecord();
+                recorder.playBack();
+                playBackStatus = PlayBackStatusEnum.PLAYBACK;
+                controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
+                controlToPlayBack.setImageResource(R.drawable.ic_play_arrow_red_24dp);
+                Toast.makeText(getApplicationContext(), "回放中...", Toast.LENGTH_LONG).show();
+            }
+        });
         ImageButton controlToNextLine = findViewById(R.id.control_to_next_line);
         controlToNextLine.setOnClickListener(v -> {
             if (line + 1 < maxLine) {
@@ -241,6 +247,7 @@ public class PlayingActivity extends AppCompatActivity {
         controlExit.setOnClickListener(v -> {
             playPanel.setVisibility(View.VISIBLE);
             controlPanel.setVisibility(View.INVISIBLE);
+            recorder.exit();
             playBackStatus = PlayBackStatusEnum.DISABLE;
             startTime = endTime = -1;
             player.setPlayMode(PlayModeEnum.LIST_LOOP);
