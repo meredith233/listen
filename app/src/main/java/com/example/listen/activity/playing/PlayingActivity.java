@@ -7,12 +7,14 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,36 +65,46 @@ public class PlayingActivity extends AppCompatActivity {
             if (player.getIsPlaying()) {
                 seekBar.setMax(player.getDuration());
                 long time = player.getCurrentPosition();
-
                 if (PlayBackStatusEnum.DISABLE.equals(playBackStatus)) {
                     lrcView.updateTime(time);
                     seekBar.setProgress((int) time);
                 } else {
-                    switch (playBackStatus) {
-                        case PLAYING:
-                            resetControlButton();
-                            if (time >= endTime) {
-                                player.pause();
-                                playBackStatus = PlayBackStatusEnum.RECORDING;
-                                recorder.start();
-                                recordEndTime = LocalTime.now().plusSeconds(30);
-                                controlToPlay.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-                                controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_red_24dp);
-                            }
-                            break;
-                        case RECORDING:
-                            if (LocalTime.now().isAfter(recordEndTime)) {
-
-                                playBackStatus = PlayBackStatusEnum.PLAYBACK;
-                                controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
-                                controlToPlayBack.setImageResource(R.drawable.ic_play_arrow_red_24dp);
-                            }
-                            break;
-                        case PLAYBACK:
-                            break;
-                        default:
-                            break;
+                    if (playBackStatus == PlayBackStatusEnum.PLAYING) {
+                        resetControlButton();
+                        if (time >= endTime) {
+                            player.pause();
+                            playBackStatus = PlayBackStatusEnum.RECORDING;
+                            recorder.start();
+                            recordEndTime = LocalTime.now().plusSeconds(30);
+                            controlToPlay.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+                            controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_red_24dp);
+                            Toast.makeText(getApplicationContext(), "录音中...", Toast.LENGTH_LONG).show();
+                        }
                     }
+                }
+            } else {
+                switch (playBackStatus) {
+                    case RECORDING:
+                        Log.i("time-check", "run: " + recordEndTime);
+                        if (LocalTime.now().isAfter(recordEndTime)) {
+                            recorder.stopRecord();
+                            playBackStatus = PlayBackStatusEnum.PLAYBACK;
+                            controlRecord.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
+                            controlToPlayBack.setImageResource(R.drawable.ic_play_arrow_red_24dp);
+                            Toast.makeText(getApplicationContext(), "回放中...", Toast.LENGTH_LONG).show();
+                        }
+                        break;
+                    case PLAYBACK:
+                        recorder.playBack();
+                        if (recorder.isEnd()) {
+                            player.seekTo((int) startTime);
+                            player.start();
+                            resetControlButton();
+                            playBackStatus = PlayBackStatusEnum.PLAYING;
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
 
