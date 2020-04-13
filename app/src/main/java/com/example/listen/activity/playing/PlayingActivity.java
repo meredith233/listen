@@ -117,7 +117,7 @@ public class PlayingActivity extends AppCompatActivity {
                 }
             }
 
-            handler.postDelayed(this, 800);
+            handler.postDelayed(this, 300);
         }
     };
 
