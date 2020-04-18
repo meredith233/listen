@@ -214,6 +214,14 @@ public class PlayingActivity extends AppCompatActivity {
             player.seekTo((int) startTime);
             lrcView.updateTime(startTime);
             resetControlButton();
+            switch (playBackStatus) {
+                case RECORDING:
+                    recorder.stopRecord();
+                    player.start();
+                case PLAYBACK:
+                    recorder.stopPlay();
+                    player.start();
+            }
             playBackStatus = PlayBackStatusEnum.PLAYING;
         });
         controlRecord = findViewById(R.id.control_record);
@@ -237,6 +245,14 @@ public class PlayingActivity extends AppCompatActivity {
             player.seekTo((int) startTime);
             lrcView.updateTime(startTime);
             resetControlButton();
+            switch (playBackStatus) {
+                case RECORDING:
+                    recorder.stopRecord();
+                    player.start();
+                case PLAYBACK:
+                    recorder.stopPlay();
+                    player.start();
+            }
             playBackStatus = PlayBackStatusEnum.PLAYING;
         });
         controlToPlayBack = findViewById(R.id.control_to_play_back);

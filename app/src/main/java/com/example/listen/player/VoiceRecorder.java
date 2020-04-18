@@ -72,4 +72,8 @@ public class VoiceRecorder {
         mediaPlayer.release();
         mediaRecorder.release();
     }
+
+    public void stopPlay() {
+        mediaPlayer.stop();
+    }
 }
