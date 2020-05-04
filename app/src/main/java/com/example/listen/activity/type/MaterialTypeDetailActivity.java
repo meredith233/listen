@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.listen.R;
+import com.example.listen.activity.playing.PlayingActivity;
 import com.example.listen.adapter.MaterialListAdapter;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
@@ -85,6 +87,17 @@ public class MaterialTypeDetailActivity extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(refreshLayout1 -> {
             viewModel.refreshMaterialType();
             refreshLayout1.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+        });
+
+        LinearLayout linearLayout = findViewById(R.id.bottom_sheet);
+        linearLayout.setOnClickListener(v -> {
+            if (bottomTitle.getText().equals(getResources().getString(R.string.bottom_title_placeholder))) {
+
+            } else {
+                Intent intent = new Intent();
+                intent.setClass(this, PlayingActivity.class);
+                startActivity(intent);
+            }
         });
     }
 

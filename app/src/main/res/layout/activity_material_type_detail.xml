@@ -22,7 +22,7 @@
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:id="@+id/type_detail_toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     app:expandedTitleMarginEnd="64dp"
                     app:expandedTitleMarginStart="48dp"
@@ -35,8 +35,8 @@
 
                         <ImageView
                             android:id="@+id/material_type_cover"
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="25dp"
                             tools:ignore="ContentDescription" />
@@ -56,16 +56,15 @@
 
                         <TextView
                             android:id="@+id/material_type_detail_describe"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/material_type_detail_title"
+                            android:layout_below="@+id/material_type_cover"
                             android:layout_alignParentEnd="true"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:layout_toEndOf="@+id/material_type_cover" />
+                            android:textSize="15sp" />
                     </RelativeLayout>
 
 
