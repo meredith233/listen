@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -81,9 +82,9 @@ public class MainActivity extends BaseActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home)
+//                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
+//                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -92,6 +93,14 @@ public class MainActivity extends BaseActivity {
 
         PermissionUtils requestPermission = new PermissionUtils();
         requestPermission.RequestPermission(this);
+
+        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 点击头部左边侧栏头部触发
+                System.out.println("233");
+            }
+        });
     }
 
     @Override
