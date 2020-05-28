@@ -6,27 +6,29 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listen.activity.BaseActivity;
 import com.example.listen.activity.playing.PlayingActivity;
+import com.example.listen.adapter.MaterialListAdapter;
+import com.example.listen.adapter.MaterialTypeListAdapter;
 import com.example.listen.common.ActivityController;
 import com.example.listen.constant.ActionConstant;
 import com.example.listen.entity.Material;
 import com.example.listen.player.MusicPlayer;
 import com.example.listen.utils.PermissionUtils;
-import com.google.android.material.navigation.NavigationView;
+import com.example.listen.viewmodel.HomeViewModel;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -44,6 +46,9 @@ public class MainActivity extends BaseActivity {
     private TextView bottomTitle;
     private TextView bottomTypeName;
 
+    private HomeViewModel homeViewModel;
+    private MaterialListAdapter materialListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +56,7 @@ public class MainActivity extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         player.setContext(this);
-
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ActionConstant.PLAY_STATUS_CHANGE);
         receiver = new PlayStatusChangeReceiver();
@@ -78,36 +83,35 @@ public class MainActivity extends BaseActivity {
         bottomTitle = findViewById(R.id.material_title_bottom);
         bottomTypeName = findViewById(R.id.material_type_bottom);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home)
-//                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-//                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-
         PermissionUtils requestPermission = new PermissionUtils();
         requestPermission.RequestPermission(this);
 
-        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 点击头部左边侧栏头部触发
-                System.out.println("233");
-            }
-        });
+        initView();
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+    private void initView() {
+        RefreshLayout refreshLayout = findViewById(R.id.refresh_main);
+        refreshLayout.setRefreshHeader(new ClassicsHeader(getBaseContext()));
+        refreshLayout.setEnableLoadMore(false);
+        refreshLayout.setOnRefreshListener(refreshLayout1 -> {
+            homeViewModel.refreshMaterial();
+            refreshLayout1.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+        });
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_main);
+        LinearLayoutManager manager = new LinearLayoutManager(getBaseContext());
+        recyclerView.setLayoutManager(manager);
+        materialListAdapter = new MaterialListAdapter(getBaseContext());
+        recyclerView.setAdapter(materialListAdapter);
+        homeViewModel.getMaterial().observe(this, materialListAdapter::setMaterials);
+
+        RecyclerView materialTypeRecyclerView = findViewById(R.id.recycler_view_main_material_type);
+        LinearLayoutManager materialTypeManager = new LinearLayoutManager(getBaseContext());
+        materialTypeManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        materialTypeRecyclerView.setLayoutManager(materialTypeManager);
+        final MaterialTypeListAdapter materialTypeListAdapter = new MaterialTypeListAdapter(getBaseContext());
+        materialTypeRecyclerView.setAdapter(materialTypeListAdapter);
+        homeViewModel.getMaterialType().observe(this, materialTypeListAdapter::setMaterials);
     }
 
     @Override
@@ -133,6 +137,7 @@ public class MainActivity extends BaseActivity {
     class PlayStatusChangeReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            materialListAdapter.notifyDataSetChanged();
             int id = player.getIsPlaying() ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
             button.setImageResource(id);
 
