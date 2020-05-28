@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.listen.R;
 import com.example.listen.common.PlayBackStatusEnum;
@@ -27,6 +28,7 @@ import com.example.listen.entity.Material;
 import com.example.listen.lrc.LrcView;
 import com.example.listen.player.MusicPlayer;
 import com.example.listen.player.VoiceRecorder;
+import com.example.listen.viewmodel.LoginDataViewModel;
 
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -41,6 +43,8 @@ public class PlayingActivity extends AppCompatActivity {
     private VoiceRecorder recorder = VoiceRecorder.getInstance();
 
     private PlayStatusChangeReceiver receiver;
+
+    private LoginDataViewModel viewModel;
 
     private Material onPlayMaterial = null;
 
@@ -127,6 +131,8 @@ public class PlayingActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        viewModel = new ViewModelProvider(this).get(LoginDataViewModel.class);
 
         playBackStatus = PlayBackStatusEnum.DISABLE;
         startTime = endTime = -1;
