@@ -17,7 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.user.InfoActivity"></activity>
+        <activity
+            android:name=".activity.login.LoginActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".activity.user.InfoActivity"
+            android:label="个人信息"
+            android:launchMode="singleInstance" />
         <activity
             android:name=".activity.playing.PlayingActivity"
             android:launchMode="singleInstance" />

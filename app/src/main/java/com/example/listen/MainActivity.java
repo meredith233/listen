@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listen.activity.BaseActivity;
+import com.example.listen.activity.login.LoginActivity;
 import com.example.listen.activity.playing.PlayingActivity;
 import com.example.listen.activity.user.InfoActivity;
 import com.example.listen.adapter.MaterialListAdapter;
@@ -30,6 +31,7 @@ import com.example.listen.entity.Material;
 import com.example.listen.player.MusicPlayer;
 import com.example.listen.utils.PermissionUtils;
 import com.example.listen.viewmodel.HomeViewModel;
+import com.example.listen.viewmodel.LoginDataViewModel;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
@@ -52,6 +54,8 @@ public class MainActivity extends BaseActivity {
     private HomeViewModel homeViewModel;
     private MaterialListAdapter materialListAdapter;
 
+    private LoginDataViewModel dataViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,8 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         player.setContext(this);
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        dataViewModel = new ViewModelProvider(this).get(LoginDataViewModel.class);
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ActionConstant.PLAY_STATUS_CHANGE);
         receiver = new PlayStatusChangeReceiver();
@@ -127,9 +133,14 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_setting) {
-            Toast.makeText(this, "这里是菜单1", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getBaseContext(), InfoActivity.class);
-            startActivity(intent);
+            if (dataViewModel.isLogin()) {
+                Intent intent = new Intent(getBaseContext(), InfoActivity.class);
+                startActivity(intent);
+            } else {
+                // 跳转登录
+                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                startActivity(intent);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
