@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.follow.FollowActivity"></activity>
         <activity
             android:name=".activity.login.LoginActivity"
             android:launchMode="singleInstance" />

@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,9 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listen.activity.BaseActivity;
-import com.example.listen.activity.login.LoginActivity;
 import com.example.listen.activity.playing.PlayingActivity;
-import com.example.listen.activity.user.InfoActivity;
 import com.example.listen.adapter.MaterialListAdapter;
 import com.example.listen.adapter.MaterialTypeListAdapter;
 import com.example.listen.common.ActivityController;
@@ -123,27 +119,27 @@ public class MainActivity extends BaseActivity {
         homeViewModel.getMaterialType().observe(this, materialTypeListAdapter::setMaterials);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_setting) {
-            if (dataViewModel.isLogin()) {
-                Intent intent = new Intent(getBaseContext(), InfoActivity.class);
-                startActivity(intent);
-            } else {
-                // 跳转登录
-                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.main_menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.action_setting) {
+//            if (dataViewModel.isLogin()) {
+//                Intent intent = new Intent(getBaseContext(), InfoActivity.class);
+//                startActivity(intent);
+//            } else {
+//                // 跳转登录
+//                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
